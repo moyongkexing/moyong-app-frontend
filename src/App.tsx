@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import styles from './App.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, login, logout } from './features/userSlice';
+import React, { useEffect } from "react";
+import styles from "./App.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser, login, logout } from "./features/userSlice";
 import { auth } from "./firebase";
-import Feed from './components/Feed';
-import Auth from './components/Auth';
+import Auth from "./components/Auth";
+import Feed from "./components/Feed";
 
-const App:React.FC = () => {
+const App: React.FC = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
@@ -21,27 +21,24 @@ const App:React.FC = () => {
           })
         );
       } else {
-        dispatch(
-          logout()
-        );
+        dispatch(logout());
       }
     });
-    return() => {
+    return () => {
       unSub();
     };
   }, [dispatch]);
-
   return (
     <>
       {user.uid ? (
         <div className={styles.app}>
-          <Feed/>
+          <Feed />
         </div>
       ) : (
-        <Auth/>
+        <Auth />
       )}
     </>
   );
-}
+};
 
 export default App;
