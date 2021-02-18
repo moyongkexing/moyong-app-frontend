@@ -7,7 +7,7 @@ import { selectUser } from "../features/userSlice";
 import { Avatar, Button, IconButton } from "@material-ui/core";
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 
-function TweetInput() {
+const TweetInput: React.FC = () => {
   const user = useSelector(selectUser);
   const [tweetImage, setTweetImage] = useState<File | null>(null);
   const [tweetMsg, setTweetMsg] = useState("");
