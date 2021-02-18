@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import TweetInput from './TweetInput';
 import styles from "./Feed.module.css";
 import Post from './Post';
@@ -15,6 +15,7 @@ const Feed: React.FC = () => {
       username: ""
     },
   ]);
+  // データベースから投稿一覧を取得してstateに入れる
   useEffect(() => {
     const unSub = db
     .collection("posts")
@@ -35,6 +36,13 @@ const Feed: React.FC = () => {
   }, []);
   return (
     <div className={styles.feed}>
+      <button
+        onClick={() => {
+          auth.signOut();
+        }}
+      >
+        SignOut
+      </button>
       <TweetInput />
       {posts[0].id &&
         <>

@@ -8,6 +8,7 @@ import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MessageIcon from "@material-ui/icons/Message";
 import SendIcon from "@material-ui/icons/Send";
+import DeleteIcon from '@material-ui/icons/Delete';
 import { StringLiteralLike } from "typescript";
 import classes from "./Post.module.css";
 
@@ -49,7 +50,22 @@ const Post: React.FC<PROPS> = (props) => {
     },
   ]);
   const [openComments, setOpenComments] = useState(false);
-
+  const deletePost = () => {
+    db.collection("posts").doc(props.postId).delete();
+    console.log("hello")
+  };
+  const newComment = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    db.collection("posts").doc(props.postId).collection("comments").add({
+      avatar: user.photoUrl,
+      text: comment,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      username: user.displayName,
+    });
+    setComment("");
+    console.log("hello");
+  }
+  // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
   useEffect(() => {
     const unSub = db
       .collection("posts")
@@ -72,17 +88,7 @@ const Post: React.FC<PROPS> = (props) => {
     };
   }, [props.postId]);
 
-  const newComment = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    db.collection("posts").doc(props.postId).collection("comments").add({
-      avatar: user.photoUrl,
-      text: comment,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      username: user.displayName,
-    });
-    setComment("");
-    console.log("hello");
-  }
+  // レンダリング
   return (
     <div className={styles.post}>
       <div className={styles.post_avatar}>
@@ -94,7 +100,7 @@ const Post: React.FC<PROPS> = (props) => {
             <h3>
               <span className={styles.post_headerUser}>@{props.username}</span>
               <span className={styles.post_headerTime}>
-                {new Date(props.timestamp.toDate()).toLocaleString()}
+                {new Date(props.timestamp?.toDate()).toLocaleString()}
               </span>
             </h3>
           </div>
@@ -111,7 +117,10 @@ const Post: React.FC<PROPS> = (props) => {
           className={styles.post_commentIcon}
           onClick={() => setOpenComments(!openComments)}
         />
-
+        <DeleteIcon
+          className={styles.post_deleteIcon}
+          onClick={deletePost}
+        />
         {openComments && (
           <>
             {
@@ -148,8 +157,6 @@ const Post: React.FC<PROPS> = (props) => {
             </form>
           </>
         )}
-
-        
       </div>
     </div>
   )

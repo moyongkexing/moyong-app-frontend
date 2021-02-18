@@ -133,7 +133,6 @@ const Auth:React.FC = () => {
         photoUrl: url,
       })
     )
-    
   };
 
   return (

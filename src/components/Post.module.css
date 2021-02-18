@@ -85,3 +85,8 @@
 .post_buttonDisable {
   display: none;
 }
+.post_deleteIcon {
+  margin-top: 15px;
+  color: whitesmoke;
+  cursor: pointer;
+}
