@@ -97,7 +97,7 @@ const Auth:React.FC = () => {
         setResetEmail("");
       })
   };
-  const onChangeImageHandoler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setAvatarImage(e.target.files![0]);
       e.target.value = "";
@@ -181,7 +181,7 @@ const Auth:React.FC = () => {
                       <input
                         className={styles.login_hiddenIcon}
                         type="file"
-                        onChange={onChangeImageHandoler}
+                        onChange={onChangeImageHandler}
                       />
                     </label>
                   </IconButton>

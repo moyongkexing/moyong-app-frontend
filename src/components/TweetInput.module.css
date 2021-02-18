@@ -24,7 +24,7 @@
 }
 .tweet_addIconLoaded {
   cursor: pointer;
-  color: dimgray;
+  color: #03BFFF;
 }
 .tweet_hiddenIcon {
   display: none;
