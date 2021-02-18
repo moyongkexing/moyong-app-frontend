@@ -11,7 +11,7 @@ const Feed: React.FC = () => {
       avatar: "",
       image: "",
       text: "",
-      timestamp: "",
+      timestamp: null,
       username: ""
     },
   ]);
@@ -36,17 +36,21 @@ const Feed: React.FC = () => {
   return (
     <div className={styles.feed}>
       <TweetInput />
-      {posts.map((post) => (
-        <Post
-          key={post.id}
-          postId={post.id}
-          avatar={post.avatar}
-          image={post.image}
-          text={post.text}
-          timestamp={post.timestamp}
-          username={post.username}
-        />
-      ))}
+      {posts[0].id &&
+        <>
+          {posts.map((post) => (
+            <Post
+              key={post.id}
+              postId={post.id}
+              avatar={post.avatar}
+              image={post.image}
+              text={post.text}
+              timestamp={post.timestamp}
+              username={post.username}
+            />
+          ))}
+        </>
+      }
     </div>
   );
 }
