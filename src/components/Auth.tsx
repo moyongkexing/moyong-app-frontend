@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://images.unsplash.com/photo-1613425269423-d77a82f85dbb?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80)',
+    backgroundImage: 'url(https://images.pexels.com/photos/5320032/pexels-photo-5320032.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],

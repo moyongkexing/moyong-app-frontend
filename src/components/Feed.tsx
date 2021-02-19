@@ -3,6 +3,8 @@ import { auth, db } from "../firebase";
 import TweetInput from './TweetInput';
 import styles from "./Feed.module.css";
 import Post from './Post';
+import { Grid } from "@material-ui/core";
+import User from './User';
 
 const Feed: React.FC = () => {
   const [ posts, setPosts] = useState([
@@ -35,31 +37,30 @@ const Feed: React.FC = () => {
     };
   }, []);
   return (
-    <div className={styles.feed}>
-      <button
-        onClick={() => {
-          auth.signOut();
-        }}
-      >
-        SignOut
-      </button>
-      <TweetInput />
-      {posts[0].id &&
-        <>
-          {posts.map((post) => (
-            <Post
-              key={post.id}
-              postId={post.id}
-              avatar={post.avatar}
-              image={post.image}
-              text={post.text}
-              timestamp={post.timestamp}
-              username={post.username}
-            />
-          ))}
-        </>
-      }
-    </div>
+    <Grid container className={styles.feed}>
+      <Grid item md={4}>
+        <User/>
+      </Grid>
+      <Grid item md={8}>
+        
+        <TweetInput />
+        {posts[0].id &&
+          <>
+            {posts.map((post) => (
+              <Post
+                key={post.id}
+                postId={post.id}
+                avatar={post.avatar}
+                image={post.image}
+                text={post.text}
+                timestamp={post.timestamp}
+                username={post.username}
+              />
+            ))}
+          </>
+        }
+      </Grid>
+    </Grid>
   );
 }
 export default Feed

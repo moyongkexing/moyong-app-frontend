@@ -10,8 +10,8 @@ import MessageIcon from "@material-ui/icons/Message";
 import SendIcon from "@material-ui/icons/Send";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { StringLiteralLike } from "typescript";
-import classes from "./Post.module.css";
 
+// -----------型宣言-----------
 interface PROPS {
   postId: string;
   avatar: string;
@@ -20,7 +20,6 @@ interface PROPS {
   timestamp: any;
   username: string;
 }
-
 interface COMMENT {
   id: string;
   avatar: string;
@@ -28,7 +27,6 @@ interface COMMENT {
   timestamp: any;
   username: string;
 }
-
 const useStyles = makeStyles((theme) => ({
   small: {
     width: theme.spacing(3),
@@ -36,10 +34,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   }
 }))
+
+// -----------Postコンポーネント-----------
 const Post: React.FC<PROPS> = (props) => {
   const user = useSelector(selectUser);
   const classes = useStyles();
   const [comment, setComment] = useState("");
+  const [openComments, setOpenComments] = useState(false);
   const [comments, setComments] = useState<COMMENT[]>([
     {
       id: "",
@@ -49,11 +50,6 @@ const Post: React.FC<PROPS> = (props) => {
       timestamp: null,
     },
   ]);
-  const [openComments, setOpenComments] = useState(false);
-  const deletePost = () => {
-    db.collection("posts").doc(props.postId).delete();
-    console.log("hello")
-  };
   const newComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     db.collection("posts").doc(props.postId).collection("comments").add({
@@ -65,6 +61,10 @@ const Post: React.FC<PROPS> = (props) => {
     setComment("");
     console.log("hello");
   }
+  const deletePost = () => {
+    db.collection("posts").doc(props.postId).delete();
+    console.log("hello")
+  };
   // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
   useEffect(() => {
     const unSub = db
