@@ -31,8 +31,8 @@ const User = () => {
           <span className={styles.name}>{user.displayName}</span>
           <button
             className={styles.logout_button}
-            onClick={() => {
-              auth.signOut();
+            onClick={async () => {
+              await auth.signOut();
             }}
           >
               <ExitToAppIcon/>

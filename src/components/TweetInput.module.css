@@ -4,7 +4,6 @@
   display: flex;
 }
 .tweet_avatar {
-  cursor: pointer;
   margin-top: 2px;
 }
 .tweet_input {

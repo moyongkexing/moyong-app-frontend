@@ -72,9 +72,6 @@ const TweetInput: React.FC = () => {
           <Avatar
             className={styles.tweet_avatar}
             src={user.photoUrl}
-            onClick={async () => {
-              await auth.signOut();
-            }}
           />
           <input
             className={styles.tweet_input}

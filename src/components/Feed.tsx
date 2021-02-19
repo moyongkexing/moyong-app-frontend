@@ -42,7 +42,6 @@ const Feed: React.FC = () => {
         <User/>
       </Grid>
       <Grid item md={8}>
-        
         <TweetInput />
         {posts[0].id &&
           <>
