@@ -1,14 +1,15 @@
 .user_profile {
   padding-top: 50px;
-}
-.user_bio {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   .name {
     font-weight: 600;
-    font-size: 18px;
+    font-size: 20px;
     color: white;
-    margin-right: 12px;
+  }
+  .logout_button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
   }
 }

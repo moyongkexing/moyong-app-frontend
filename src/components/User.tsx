@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import { auth } from "../firebase";
 import { Grid } from "@material-ui/core";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,21 +21,21 @@ const User = () => {
 
   return (
     <div className={styles.user_profile}>
-      <Grid container>
+      <Grid container alignItems="center">
         <Grid
-          item xs={4}
-          className={styles.user_bio}
+          item xs
         >
           <Avatar className={classes.large} src={user.photoUrl} />
-          <span>{user.displayName}</span>
         </Grid>
-        <Grid item xs>
+        <Grid item xs={10}>
+          <span className={styles.name}>{user.displayName}</span>
           <button
-              onClick={() => {
-                auth.signOut();
-              }}
-            >
-              SignOut
+            className={styles.logout_button}
+            onClick={() => {
+              auth.signOut();
+            }}
+          >
+              <ExitToAppIcon/>
           </button>
         </Grid>
       </Grid>
