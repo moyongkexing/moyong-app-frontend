@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './User.module.css'
+import styles from './User.module.scss'
 import { Avatar, createStyles, makeStyles, Theme } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
