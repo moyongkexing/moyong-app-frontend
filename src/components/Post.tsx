@@ -21,6 +21,7 @@ interface PROPS {
   timestamp: any;
   username: string;
   uid: any;
+  updateProfile: any;
 }
 interface COMMENT {
   id: string;
@@ -68,15 +69,15 @@ const Post: React.FC<PROPS> = (props) => {
     db.collection("posts").doc(props.postId).delete();
     console.log("hello")
   };
-  const pickUser = (name: string, avatar:string) => {
-    console.log(`${name} + ${avatar}`);
-    dispatch(
-      setProfile({
-        username: name,
-        avatar: avatar,
-      })
-    );
-  };
+  // const pickUser = (name: string, avatar:string) => {
+  //   console.log(`${name} + ${avatar}`);
+  //   dispatch(
+  //     setProfile({
+  //       username: name,
+  //       avatar: avatar,
+  //     })
+  //   );
+  // };
   // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
   useEffect(() => {
     const unSub = db
@@ -112,7 +113,7 @@ const Post: React.FC<PROPS> = (props) => {
             <h3>
               <span
                 className={styles.post_headerUser}
-                onClick={() => pickUser(props.username, props.avatar)}
+                onClick={() => props.updateProfile(props.username, props.avatar)}
               >@{props.username}</span>
               <span className={styles.post_headerTime}>
                 {new Date(props.timestamp?.toDate()).toLocaleString()}

@@ -5,10 +5,14 @@ import styles from "./Feed.module.css";
 import Post from './Post';
 import { Grid } from "@material-ui/core";
 import User from './User';
-import { selectPickedUser } from "../features/pickedUserSlice"
+import { selectPickedUser, setProfile } from "../features/pickedUserSlice"
 import { selectUser } from "../features/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
+interface PROFILE_USER {
+  profileUserName: string;
+  avatar: string;
+}
 const Feed: React.FC = () => {
   const pickedUser = useSelector(selectPickedUser);
   const dispatch = useDispatch();
@@ -49,13 +53,20 @@ const Feed: React.FC = () => {
     };
   }, []);
   //ユーザープロフィール画面をユーザーに応じて切り替える
-  useEffect(() => {
-    console.log("hello");
+  // useEffect(() => {
+  //   console.log("hello");
+  //   setProfileUser({
+  //     profileUserName: pickedUser.username,
+  //     avatar: pickedUser.avatar
+  //   });
+  // },[])
+  const updateProfile = (name:string, avatar:string) => {
+    console.log(`${name} + ${avatar}`);
     setProfileUser({
-      profileUserName: pickedUser.username,
-      avatar: pickedUser.avatar
-    });
-  },[])
+      profileUserName: name,
+      avatar: avatar,
+    })
+  }
   
   return (
     <Grid container className={styles.feed}>
@@ -79,6 +90,7 @@ const Feed: React.FC = () => {
                 timestamp={post.timestamp}
                 username={post.username}
                 uid={post.uid}
+                updateProfile={updateProfile}
               />
             ))}
           </>
