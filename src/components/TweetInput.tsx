@@ -65,7 +65,6 @@ const TweetInput: React.FC = () => {
     setTweetImage(null);
     setTweetMsg("");
   };
-
   return (
     <>
       <form onSubmit={sendTweet}>
@@ -97,7 +96,6 @@ const TweetInput: React.FC = () => {
             </label>
           </IconButton>
         </div>
-
         <Button
           type="submit"
           disabled={!tweetMsg}

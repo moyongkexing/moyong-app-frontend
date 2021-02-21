@@ -3,7 +3,7 @@ import { auth, db } from "../firebase";
 import TweetInput from './TweetInput';
 import styles from "./Feed.module.css";
 import Post from './Post';
-import { Grid } from "@material-ui/core";
+import { Grid, Box } from "@material-ui/core";
 import User from './User';
 import { selectUser } from "../features/userSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -56,10 +56,12 @@ const Feed: React.FC = () => {
   return (
     <Grid container className={styles.feed}>
       <Grid item md={4}>
-        <User
-          profileUserName={profileUser.profileUserName}
-          profileUserAvatar={profileUser.avatar}
-        />
+        <Box display="flex" justifyContent="flex-end">
+          <User
+            profileUserName={profileUser.profileUserName}
+            profileUserAvatar={profileUser.avatar}
+          />
+        </Box>
       </Grid>
       <Grid item md={8}>
         <TweetInput />
