@@ -264,6 +264,7 @@ const Auth:React.FC = () => {
               color="primary"
               className={classes.submit}
               onClick={signInGoogle}
+              startIcon={<CameraIcon/>}
             >
               SignIn with Google
             </Button>
