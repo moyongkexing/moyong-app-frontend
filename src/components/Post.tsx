@@ -2,17 +2,13 @@ import React, { useState, useEffect } from "react";
 import styles from "./Post.module.css";
 import { db } from "../firebase";
 import firebase from "firebase/app";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
-import { selectPickedUser, setProfile } from "../features/pickedUserSlice"
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MessageIcon from "@material-ui/icons/Message";
 import SendIcon from "@material-ui/icons/Send";
 import DeleteIcon from '@material-ui/icons/Delete';
-import { StringLiteralLike } from "typescript";
-
-// -----------型宣言-----------
 interface PROPS {
   postId: string;
   avatar: string;
@@ -37,11 +33,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   }
 }))
-
 // -----------Postコンポーネント-----------
 const Post: React.FC<PROPS> = (props) => {
   const user = useSelector(selectUser);
-  const dispatch = useDispatch();
   const classes = useStyles();
   const [comment, setComment] = useState("");
   const [openComments, setOpenComments] = useState(false);
@@ -65,19 +59,10 @@ const Post: React.FC<PROPS> = (props) => {
     setComment("");
     console.log("hello");
   }
+  // 投稿削除
   const deletePost = () => {
     db.collection("posts").doc(props.postId).delete();
-    console.log("hello")
   };
-  // const pickUser = (name: string, avatar:string) => {
-  //   console.log(`${name} + ${avatar}`);
-  //   dispatch(
-  //     setProfile({
-  //       username: name,
-  //       avatar: avatar,
-  //     })
-  //   );
-  // };
   // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
   useEffect(() => {
     const unSub = db
@@ -100,8 +85,6 @@ const Post: React.FC<PROPS> = (props) => {
       unSub();
     };
   }, [props.postId]);
-
-  // レンダリング
   return (
     <div className={styles.post}>
       <div className={styles.post_avatar}>
@@ -177,5 +160,4 @@ const Post: React.FC<PROPS> = (props) => {
     </div>
   )
 }
-
 export default Post

@@ -1,12 +1,9 @@
 import React from 'react'
 import styles from './User.module.scss'
 import { Avatar, createStyles, makeStyles, Theme } from "@material-ui/core";
-import { useSelector } from "react-redux";
-import { selectUser } from "../features/userSlice";
 import { auth } from "../firebase";
 import { Grid } from "@material-ui/core";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
 interface PROPS {
   profileUserName: string;
   profileUserAvatar: string;
@@ -20,7 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 const User:React.FC<PROPS> = (props) => {
-  // const user = useSelector(selectUser);
   const classes = useStyles();
   return (
     <div className={styles.user_profile}>
