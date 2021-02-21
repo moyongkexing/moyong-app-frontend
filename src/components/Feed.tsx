@@ -5,18 +5,29 @@ import styles from "./Feed.module.css";
 import Post from './Post';
 import { Grid } from "@material-ui/core";
 import User from './User';
+import { selectPickedUser } from "../features/pickedUserSlice"
+import { selectUser } from "../features/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Feed: React.FC = () => {
-  const [ posts, setPosts] = useState([
-    {
+  const pickedUser = useSelector(selectPickedUser);
+  const dispatch = useDispatch();
+  const [ posts, setPosts] = useState([{
       id: "",
       avatar: "",
       image: "",
       text: "",
       timestamp: null,
-      username: ""
+      username: "",
+      uid: null,
     },
   ]);
+  const user = useSelector(selectUser);
+  const [profileUser, setProfileUser ] = useState({
+    profileUserName: user.displayName,
+    avatar: user.photoUrl
+    }
+  )
   // データベースから投稿一覧を取得してstateに入れる
   useEffect(() => {
     const unSub = db
@@ -30,16 +41,29 @@ const Feed: React.FC = () => {
         text: doc.data().text,
         timestamp: doc.data().timestamp,
         username: doc.data().username,
+        uid: doc.data().uid
       }))
     ));
     return () => {
       unSub();
     };
   }, []);
+  //ユーザープロフィール画面をユーザーに応じて切り替える
+  useEffect(() => {
+    console.log("hello");
+    setProfileUser({
+      profileUserName: pickedUser.username,
+      avatar: pickedUser.avatar
+    });
+  },[])
+  
   return (
     <Grid container className={styles.feed}>
       <Grid item md={4}>
-        <User/>
+        <User
+          profileUserName={profileUser.profileUserName}
+          profileUserAvatar={profileUser.avatar}
+        />
       </Grid>
       <Grid item md={8}>
         <TweetInput />
@@ -54,6 +78,7 @@ const Feed: React.FC = () => {
                 text={post.text}
                 timestamp={post.timestamp}
                 username={post.username}
+                uid={post.uid}
               />
             ))}
           </>

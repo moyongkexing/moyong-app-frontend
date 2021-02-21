@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import styles from "./Auth.module.css";
 import { auth, provider, storage } from "../firebase";
 import { updateUserProfile } from "../features/userSlice";
-
 import {
   Avatar,
   Button,
@@ -134,7 +133,6 @@ const Auth:React.FC = () => {
       })
     )
   };
-
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />

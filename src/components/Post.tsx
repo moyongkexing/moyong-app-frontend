@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import styles from "./Post.module.css";
 import { db } from "../firebase";
 import firebase from "firebase/app";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../features/userSlice";
+import { selectPickedUser, setProfile } from "../features/pickedUserSlice"
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MessageIcon from "@material-ui/icons/Message";
@@ -19,6 +20,7 @@ interface PROPS {
   text: string;
   timestamp: any;
   username: string;
+  uid: any;
 }
 interface COMMENT {
   id: string;
@@ -38,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 // -----------Postコンポーネント-----------
 const Post: React.FC<PROPS> = (props) => {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [comment, setComment] = useState("");
   const [openComments, setOpenComments] = useState(false);
@@ -64,6 +67,15 @@ const Post: React.FC<PROPS> = (props) => {
   const deletePost = () => {
     db.collection("posts").doc(props.postId).delete();
     console.log("hello")
+  };
+  const pickUser = (name: string, avatar:string) => {
+    console.log(`${name} + ${avatar}`);
+    dispatch(
+      setProfile({
+        username: name,
+        avatar: avatar,
+      })
+    );
   };
   // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
   useEffect(() => {
@@ -98,7 +110,10 @@ const Post: React.FC<PROPS> = (props) => {
         <div>
           <div className={styles.post_header}>
             <h3>
-              <span className={styles.post_headerUser}>@{props.username}</span>
+              <span
+                className={styles.post_headerUser}
+                onClick={() => pickUser(props.username, props.avatar)}
+              >@{props.username}</span>
               <span className={styles.post_headerTime}>
                 {new Date(props.timestamp?.toDate()).toLocaleString()}
               </span>

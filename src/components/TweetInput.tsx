@@ -47,6 +47,7 @@ const TweetInput: React.FC = () => {
                 text: tweetMsg,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 username: user.displayName,
+                uid: user.uid
               });
             });
         }
@@ -58,8 +59,8 @@ const TweetInput: React.FC = () => {
         text: tweetMsg,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         username: user.displayName,
+        uid: user.uid
       });
-      console.log("hello");
     }
     setTweetImage(null);
     setTweetMsg("");
