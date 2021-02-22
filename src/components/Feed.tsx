@@ -65,7 +65,7 @@ const Feed: React.FC = () => {
       </Grid>
       <Grid item md={8}>
         <PostInput />
-        {posts[0].id &&
+        {/* {posts[0].id &&
           <>
             {posts.map((post) => (
               <Post
@@ -81,7 +81,7 @@ const Feed: React.FC = () => {
               />
             ))}
           </>
-        }
+        } */}
       </Grid>
     </Grid>
   );

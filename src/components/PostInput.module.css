@@ -6,15 +6,39 @@
 .tweet_avatar {
   margin-top: 2px;
 }
-.tweet_input {
-  margin-left: 40px;
-  width: 90%;
+.trainingName {
+  margin-left: 20px;
+  width: 50%;
   background-color: #e1e1e1;
   padding: 15px;
-  border-radius: 30px;
+  border-radius: 10px;
   outline: none;
   border: none;
   color: #333333;
+  font-size: 18px;
+  height: 45px;
+}
+.trainingWeight {
+  margin-left: 20px;
+  background-color: #e1e1e1;
+  padding: 15px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  color: #333333;
+  height: 45px;
+  font-size: 16px;
+} 
+.trainingReps {
+  margin-left: 20px;
+  width: 60px;
+  background-color: #e1e1e1;
+  padding: 15px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  color: #333333;
+  height: 45px;
   font-size: 18px;
 }
 .tweet_addIcon {
@@ -50,4 +74,11 @@
   height: 40px !important;
   margin-left: 80% !important;
   cursor: none !important;
+}
+.saveTrainingRecord {
+  margin-top: 15px;
+  color: #00bfff;
+  cursor: pointer;
+  margin-left: 20px;
+  
 }
