@@ -56,7 +56,7 @@ const Feed: React.FC = () => {
   return (
     <Grid container className={styles.feed}>
       <Grid item md={4}>
-        <Box display="flex" justifyContent="flex-end">
+        <Box display="flex" justifyContent="flex-start">
           <User
             profileUserName={profileUser.profileUserName}
             profileUserAvatar={profileUser.avatar}

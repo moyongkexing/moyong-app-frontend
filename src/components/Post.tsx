@@ -88,7 +88,10 @@ const Post: React.FC<PROPS> = (props) => {
   return (
     <div className={styles.post}>
       <div className={styles.post_avatar}>
-        <Avatar src={props.avatar} />
+        <Avatar
+          src={props.avatar}
+          className={styles.hoverAvatar}
+          onClick={() => props.updateProfile(props.username, props.avatar)}/>
       </div>
       <div className={styles.post_body}>
         <div>
