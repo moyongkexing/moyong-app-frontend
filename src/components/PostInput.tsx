@@ -39,6 +39,11 @@ const weightList = [
     label: '40lbs | 18kg',
   },
 ];
+let trainingRecords = [{
+  trainingName: "",
+  trainingWeight: "",
+  trainingReps: "",
+}];
 // const useStyles = makeStyles((theme: Theme) =>
 //   createStyles({
 //     trainingNameInput: {
@@ -59,9 +64,6 @@ const TweetInput: React.FC = () => {
   const user = useSelector(selectUser);
   // const classes = useStyles();
   const [ image, setImage] = useState<File | null>(null);
-  // const [ trainingName, setTrainingName] = useState("");
-  // const [ trainingWeight, setTrainingWeight ] = useState<string | null>("none");
-  // const [ trainingReps, setTrainingReps ] = useState("0");
   const [ trainingRecord, setTrainingRecord ] = useState({
     trainingName: "",
     trainingWeight: "none",
@@ -73,10 +75,20 @@ const TweetInput: React.FC = () => {
       e.target.value = "";
     }
   };
-  const saveTrainingRecord = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("hello");
-  }
+  const saveTrainingRecord = () => {
+    // trainingRecords = [{
+      //   name: trainingRecord.trainingName,
+      //   weight: trainingRecord.trainingWeight,
+      //   reps: trainingRecord.trainingReps,
+    // }]
+    trainingRecords.push(trainingRecord);
+    setTrainingRecord({
+      trainingName: "",
+      trainingWeight: "none",
+      trainingReps: "0",
+    });
+    console.log(trainingRecords);
+  };
   // const sendTrainingPost = (e: React.FormEvent<HTMLFormElement>) => {
   //   e.preventDefault();
   //   if (image) {
@@ -138,7 +150,6 @@ const TweetInput: React.FC = () => {
             className={styles.tweet_avatar}
             src={user.photoUrl}
           />
-{/* ---------------------------------------------------- */}
           <input
             className={styles.trainingName}
             placeholder="What kind of training?"
@@ -165,13 +176,8 @@ const TweetInput: React.FC = () => {
             value={trainingRecord.trainingReps}
             onChange={(e) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
           />
-          <AddCircleIcon
-            className={styles.saveTrainingRecord}
-          />
-
-
-
-          {/* <IconButton>
+          
+          <IconButton>
             <label>
               <AddPhotoAlternateIcon
                 className={
@@ -184,7 +190,7 @@ const TweetInput: React.FC = () => {
                 onChange={onChangeImageHandler}
               />
             </label>
-          </IconButton> */}
+          </IconButton>
         </div>
         {/* <Button
           type="submit"
@@ -196,7 +202,10 @@ const TweetInput: React.FC = () => {
           Tweet
         </Button> */}
       </form>
-      <p>{trainingRecord.trainingWeight}</p>
+      <AddCircleIcon
+        className={styles.saveTrainingRecord}
+        onClick={() => saveTrainingRecord()}
+      />
     </>
   );
 }
