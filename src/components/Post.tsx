@@ -16,7 +16,7 @@ interface PROPS {
   text: string;
   timestamp: any;
   username: string;
-  uid: any;
+  postUid: string;
   updateProfile: any;
 }
 interface COMMENT {
@@ -61,7 +61,11 @@ const Post: React.FC<PROPS> = (props) => {
   }
   // 投稿削除
   const deletePost = () => {
-    db.collection("posts").doc(props.postId).delete();
+    if (user.uid === props.postUid) {
+      db.collection("posts").doc(props.postId).delete();
+    } else {
+      console.log("failed to delete!")
+    }
   };
   // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
   useEffect(() => {
@@ -119,10 +123,13 @@ const Post: React.FC<PROPS> = (props) => {
           className={styles.post_commentIcon}
           onClick={() => setOpenComments(!openComments)}
         />
-        <DeleteIcon
+        {
+          user.uid === props.postUid &&
+          <DeleteIcon
           className={styles.post_deleteIcon}
           onClick={deletePost}
         />
+        }
         {openComments && (
           <>
             {

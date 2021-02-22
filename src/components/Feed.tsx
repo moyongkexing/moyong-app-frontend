@@ -16,7 +16,7 @@ const Feed: React.FC = () => {
       text: "",
       timestamp: null,
       username: "",
-      uid: null,
+      uid: "",
     },
   ]);
   const user = useSelector(selectUser);
@@ -76,7 +76,7 @@ const Feed: React.FC = () => {
                 text={post.text}
                 timestamp={post.timestamp}
                 username={post.username}
-                uid={post.uid}
+                postUid={post.uid}
                 updateProfile={updateProfile}
               />
             ))}
