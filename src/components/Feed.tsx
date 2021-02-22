@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { auth, db } from "../firebase";
-import TweetInput from './TweetInput';
+import PostInput from './PostInput';
 import styles from "./Feed.module.css";
 import Post from './Post';
 import { Grid, Box } from "@material-ui/core";
@@ -64,7 +64,7 @@ const Feed: React.FC = () => {
         </Box>
       </Grid>
       <Grid item md={8}>
-        <TweetInput />
+        <PostInput />
         {posts[0].id &&
           <>
             {posts.map((post) => (

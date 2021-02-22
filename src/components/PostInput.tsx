@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./TweetInput.module.css";
+import styles from "./PostInput.module.css";
 import { storage, db, auth } from "../firebase";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
