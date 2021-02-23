@@ -57,7 +57,6 @@ const Post: React.FC<PROPS> = (props) => {
       username: user.displayName,
     });
     setComment("");
-    console.log("hello");
   }
   // 投稿削除
   const deletePost = () => {

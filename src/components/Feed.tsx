@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { auth, db } from "../firebase";
-import PostInput from './PostInput';
+import PostInput from './TrainingInput';
 import styles from "./Feed.module.css";
 import Post from './Post';
 import { Grid, Box } from "@material-ui/core";

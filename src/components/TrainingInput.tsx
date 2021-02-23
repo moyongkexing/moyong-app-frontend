@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./PostInput.module.scss";
+import styles from "./TrainingInput.module.scss";
 import { storage, db, auth } from "../firebase";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
@@ -14,15 +14,18 @@ import {
   MenuItem,
   createStyles,
   makeStyles,
+  FormControl,
+  InputLabel,
+  Select,
   Theme,
 } from "@material-ui/core";
 
-interface trainingRecords {
+interface TrainingRecord {
   trainingName: string;
   trainingWeight: string;
   trainingReps: string;
 }
-let trainingRecords = [{}];
+
 const weightList = [
   {value: 'none', label: 'none'},
   {value: '10', label: '10lbs | 4.5kg'},
@@ -46,108 +49,91 @@ const weightList = [
   {value: '190', label: '190lbs | 86kg'},
   {value: '200', label: '200lbs | 91kg'},
 ];
-
-// const useStyles = makeStyles((theme: Theme) =>
-//   createStyles({
-//     trainingNameInput: {
-//       '& > *': {
-//         margin: theme.spacing(1),
-//         width: '25ch',
-//       },
-//     },
-//     trainingWeightSelect: {
-//       '& .MuiTextField-root': {
-//         margin: theme.spacing(1),
-//         width: '25ch',
-//       },
-//     },
-//   }),
-// );
-const TweetInput: React.FC = () => {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+  }),
+);
+const TrainingInput: React.FC = () => {
   const user = useSelector(selectUser);
-  // const classes = useStyles();
+  const classes = useStyles();
   const [ image, setImage] = useState<File | null>(null);
-  const [ trainingRecord, setTrainingRecord ] = useState({
+  const [ trainingRecord, setTrainingRecord ] = useState<TrainingRecord>({
     trainingName: "",
     trainingWeight: "none",
     trainingReps: "0",
   })
+  const [ trainingRecords, setTrainingRecords ] = useState<TrainingRecord[]>([]);
+  const saveTrainingRecord = () => {
+    setTrainingRecords([...trainingRecords, trainingRecord]);
+    setTrainingRecord({
+      trainingName: "",
+      trainingWeight: "none",
+      trainingReps: "0",
+    })
+    console.log(trainingRecords);
+  };
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setImage(e.target.files![0]);
       e.target.value = "";
     }
   };
-  const saveTrainingRecord = () => {
-    if (!trainingRecords.length) {
-      trainingRecords.push(trainingRecords);
-      trainingRecords.shift();
+  const postTrainingRecords = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (image) {
+      const S =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const N = 16;
+      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+        .map((n) => S[n % S.length])
+        .join("");
+      const fileName = randomChar + "_" + image.name;
+      const uploadImg = storage.ref(`images/${fileName}`).put(image);
+      uploadImg.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        () => {},
+        (err) => {
+          alert(err.message);
+        },
+        async () => {
+          await storage
+            .ref("images")
+            .child(fileName)
+            .getDownloadURL()
+            .then(async (url) => {
+              await db.collection('training_posts').add({
+                avatar: user.photoUrl,
+                image: url,
+                training_array: trainingRecords,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                username: user.displayName,
+                uid: user.uid
+              });
+            });
+        }
+      );
     } else {
-      trainingRecords.push(trainingRecord);
+      db.collection('training_posts').add({
+        avatar: user.photoUrl,
+        image: "",
+        training_array: trainingRecords,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        username: user.displayName,
+        uid: user.uid
+      });
     }
-    setTrainingRecord({
-      trainingName: "",
-      trainingWeight: "none",
-      trainingReps: "0",
-    });
-    console.log(trainingRecords);
+    setImage(null);
   };
-  // const sendTrainingPost = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   if (image) {
-  //     const S =
-  //       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  //     const N = 16;
-  //     const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-  //       .map((n) => S[n % S.length])
-  //       .join("");
-  //     const fileName = randomChar + "_" + image.name;
-  //     const uploadImg = storage.ref(`images/${fileName}`).put(image);
-  //     uploadImg.on(
-  //       firebase.storage.TaskEvent.STATE_CHANGED,
-  //       () => {},
-  //       (err) => {
-  //         alert(err.message);
-  //       },
-  //       async () => {
-  //         await storage
-  //           .ref("images")
-  //           .child(fileName)
-  //           .getDownloadURL()
-  //           .then(async (url) => {
-  //             await db.collection('training_posts').add({
-  //               avatar: user.photoUrl,
-  //               image: url,
-  //               training_name: trainingName,
-  //               training_weight: trainingWeight,
-  //               training_reps: trainingReps,
-  //               timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-  //               username: user.displayName,
-  //               uid: user.uid
-  //             });
-  //           });
-  //       }
-  //     );
-  //   } else {
-  //     db.collection('training_posts').add({
-  //       avatar: user.photoUrl,
-  //       image: "",
-  //       training_name: trainingName,
-  //       training_weight: trainingWeight,
-  //       training_reps: trainingReps,
-  //       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-  //       username: user.displayName,
-  //       uid: user.uid
-  //     });
-  //   }
-  //   setImage(null);
-  //   setTrainingName("");
-  //   setTrainingWeight("none");
-  //   setTrainingReps("0");
-  // };
   return (
     <>
-      <form>
+      <form onSubmit={postTrainingRecords}>
         <div className={styles.tweet_form}>
           <Avatar
             className={styles.tweet_avatar}
@@ -198,19 +184,22 @@ const TweetInput: React.FC = () => {
             </label>
           </IconButton>
         </div>
-        {/* <Button
+        <Button
           type="submit"
-          disabled={!trainingName}
+          disabled={!trainingRecords.length}
           className={
-            trainingName ? styles.tweet_sendBtn : styles.tweet_sendDisableBtn
+            trainingRecords.length ? styles.tweet_sendBtn : styles.tweet_sendDisableBtn
           }
         >
           Tweet
-        </Button> */}
+        </Button>
       </form>
-      
+      <ul>
+        {trainingRecords.map((record) => (
+          <li key={record.trainingName}>{record.trainingName} + {record.trainingWeight} + {record.trainingReps}</li>
+        ))}
+      </ul>
     </>
   );
 }
-
-export default TweetInput;
+export default TrainingInput;
