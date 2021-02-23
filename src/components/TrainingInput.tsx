@@ -130,6 +130,7 @@ const TrainingInput: React.FC = () => {
       });
     }
     setImage(null);
+    setTrainingRecords([]);
   };
   return (
     <>
