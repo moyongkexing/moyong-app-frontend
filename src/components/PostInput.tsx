@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./PostInput.module.css";
+import styles from "./PostInput.module.scss";
 import { storage, db, auth } from "../firebase";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
@@ -17,33 +17,32 @@ import {
   Theme,
 } from "@material-ui/core";
 
+
+let trainingRecords = [{}];
 const weightList = [
-  {
-    value: 'none',
-    label: 'none',
-  },
-  {
-    value: '10',
-    label: '10lbs | 4.5kg',
-  },
-  {
-    value: '20',
-    label: '20lbs | 9kg',
-  },
-  {
-    value: '30',
-    label: '30lbs | 14lg',
-  },
-  {
-    value: '40',
-    label: '40lbs | 18kg',
-  },
+  {value: 'none', label: 'none'},
+  {value: '10', label: '10lbs | 4.5kg'},
+  {value: '20', label: '20lbs | 4.5kg'},
+  {value: '30', label: '30lbs | 4.5kg'},
+  {value: '40', label: '40lbs | 4.5kg'},
+  {value: '50', label: '50lbs | 4.5kg'},
+  {value: '60', label: '60lbs | 4.5kg'},
+  {value: '70', label: '70lbs | 4.5kg'},
+  {value: '80', label: '80lbs | 4.5kg'},
+  {value: '90', label: '90lbs | 4.5kg'},
+  {value: '100', label: '100lbs | 4.5kg'},
+  {value: '110', label: '110lbs | 4.5kg'},
+  {value: '120', label: '120lbs | 4.5kg'},
+  {value: '130', label: '130lbs | 4.5kg'},
+  {value: '140', label: '140lbs | 4.5kg'},
+  {value: '150', label: '150lbs | 4.5kg'},
+  {value: '160', label: '160lbs | 4.5kg'},
+  {value: '170', label: '170lbs | 4.5kg'},
+  {value: '180', label: '180lbs | 4.5kg'},
+  {value: '190', label: '190lbs | 4.5kg'},
+  {value: '200', label: '200lbs | 4.5kg'},
 ];
-let trainingRecords = [{
-  trainingName: "",
-  trainingWeight: "",
-  trainingReps: "",
-}];
+
 // const useStyles = makeStyles((theme: Theme) =>
 //   createStyles({
 //     trainingNameInput: {
@@ -76,12 +75,11 @@ const TweetInput: React.FC = () => {
     }
   };
   const saveTrainingRecord = () => {
-    // trainingRecords = [{
-      //   name: trainingRecord.trainingName,
-      //   weight: trainingRecord.trainingWeight,
-      //   reps: trainingRecord.trainingReps,
-    // }]
-    trainingRecords.push(trainingRecord);
+    if (!trainingRecords) {
+      trainingRecords = [{trainingRecord}];
+    } else {
+      trainingRecords.push(trainingRecord);
+    }
     setTrainingRecord({
       trainingName: "",
       trainingWeight: "none",
@@ -176,7 +174,10 @@ const TweetInput: React.FC = () => {
             value={trainingRecord.trainingReps}
             onChange={(e) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
           />
-          
+          <AddCircleIcon
+            className={styles.saveTrainingRecord}
+            onClick={() => saveTrainingRecord()}
+          />
           <IconButton>
             <label>
               <AddPhotoAlternateIcon
@@ -202,10 +203,7 @@ const TweetInput: React.FC = () => {
           Tweet
         </Button> */}
       </form>
-      <AddCircleIcon
-        className={styles.saveTrainingRecord}
-        onClick={() => saveTrainingRecord()}
-      />
+      
     </>
   );
 }

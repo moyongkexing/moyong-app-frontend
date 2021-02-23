@@ -31,7 +31,7 @@
 } 
 .trainingReps {
   margin-left: 20px;
-  width: 60px;
+  width: 90px;
   background-color: #e1e1e1;
   padding: 15px;
   border-radius: 10px;
@@ -40,6 +40,12 @@
   color: #333333;
   height: 45px;
   font-size: 18px;
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance:textfield;
+  }
 }
 .tweet_addIcon {
   cursor: pointer;
@@ -81,4 +87,10 @@
   cursor: pointer;
   margin-left: 20px;
   
+}
+.no-spin::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance:textfield;
 }
