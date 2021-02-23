@@ -17,7 +17,11 @@ import {
   Theme,
 } from "@material-ui/core";
 
-
+interface trainingRecords {
+  trainingName: string;
+  trainingWeight: string;
+  trainingReps: string;
+}
 let trainingRecords = [{}];
 const weightList = [
   {value: 'none', label: 'none'},
@@ -75,8 +79,9 @@ const TweetInput: React.FC = () => {
     }
   };
   const saveTrainingRecord = () => {
-    if (!trainingRecords) {
-      trainingRecords = [{trainingRecord}];
+    if (!trainingRecords.length) {
+      trainingRecords.push(trainingRecords);
+      trainingRecords.shift();
     } else {
       trainingRecords.push(trainingRecord);
     }
