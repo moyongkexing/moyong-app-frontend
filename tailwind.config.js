@@ -13,6 +13,9 @@ module.exports = {
         'toggleLoginBtn': '#0000ff',
         'setAvatarBtn': '#303f9e',
       },
+      spacing: {
+        '28rem': '28rem',
+      },
     },
   },
   variants: {

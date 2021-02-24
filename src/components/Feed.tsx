@@ -58,7 +58,7 @@ const Feed: React.FC = () => {
           profileUserAvatar={profileUser.avatar}
         />
       </div>
-      <div className="row-span-2 col-span-2 bg-gray-800">
+      <div className="row-span-2 col-span-2 bg-gray-800 w-28rem">
         <TrainingInput />
       </div>
       <div className="row-span-3 col-span-3 bg-gray-800">
