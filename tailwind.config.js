@@ -9,6 +9,7 @@ module.exports = {
         'enableBtn': '#00bfff',
         'disableBtn': 'gray',
         'disablePhoto': 'gray',
+        'appBg': '#444447',
       }
     },
   },
