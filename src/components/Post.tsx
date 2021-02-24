@@ -2,25 +2,22 @@ import React, { useState, useEffect } from "react";
 import styles from "./Post.module.css";
 import { db } from "../firebase";
 import firebase from "firebase/app";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
-import { selectPickedUser, setProfile } from "../features/pickedUserSlice"
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MessageIcon from "@material-ui/icons/Message";
 import SendIcon from "@material-ui/icons/Send";
 import DeleteIcon from '@material-ui/icons/Delete';
-import { StringLiteralLike } from "typescript";
-
-// -----------型宣言-----------
 interface PROPS {
   postId: string;
   avatar: string;
   image: string;
-  text: string;
+  trainingArray: any;
   timestamp: any;
   username: string;
-  uid: any;
+  postUid: string;
+  updateProfile: any;
 }
 interface COMMENT {
   id: string;
@@ -36,11 +33,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   }
 }))
-
 // -----------Postコンポーネント-----------
 const Post: React.FC<PROPS> = (props) => {
   const user = useSelector(selectUser);
-  const dispatch = useDispatch();
   const classes = useStyles();
   const [comment, setComment] = useState("");
   const [openComments, setOpenComments] = useState(false);
@@ -55,56 +50,51 @@ const Post: React.FC<PROPS> = (props) => {
   ]);
   const newComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    db.collection("posts").doc(props.postId).collection("comments").add({
+    db.collection("training_posts").doc(props.postId).collection("comments").add({
       avatar: user.photoUrl,
       text: comment,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       username: user.displayName,
     });
     setComment("");
-    console.log("hello");
   }
+  // 投稿削除
   const deletePost = () => {
-    db.collection("posts").doc(props.postId).delete();
-    console.log("hello")
-  };
-  const pickUser = (name: string, avatar:string) => {
-    console.log(`${name} + ${avatar}`);
-    dispatch(
-      setProfile({
-        username: name,
-        avatar: avatar,
-      })
-    );
+    if (user.uid === props.postUid) {
+      db.collection("training_posts").doc(props.postId).delete();
+    } else {
+      console.log("failed to delete!")
+    }
   };
   // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
-  useEffect(() => {
-    const unSub = db
-      .collection("posts")
-      .doc(props.postId)
-      .collection("comments")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        setComments(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            avatar: doc.data().avatar,
-            text: doc.data().text,
-            username: doc.data().username,
-            timestamp: doc.data().timestamp,
-          }))
-        );
-      });
-    return () => {
-      unSub();
-    };
-  }, [props.postId]);
-
-  // レンダリング
+  // useEffect(() => {
+  //   const unSub = db
+  //     .collection("training_posts")
+  //     .doc(props.postId)
+  //     .collection("comments")
+  //     .orderBy("timestamp", "desc")
+  //     .onSnapshot((snapshot) => {
+  //       setComments(
+  //         snapshot.docs.map((doc) => ({
+  //           id: doc.id,
+  //           avatar: doc.data().avatar,
+  //           text: doc.data().text,
+  //           username: doc.data().username,
+  //           timestamp: doc.data().timestamp,
+  //         }))
+  //       );
+  //     });
+  //   return () => {
+  //     unSub();
+  //   };
+  // }, [props.postId]);
   return (
     <div className={styles.post}>
       <div className={styles.post_avatar}>
-        <Avatar src={props.avatar} />
+        <Avatar
+          src={props.avatar}
+          className={styles.hoverAvatar}
+          onClick={() => props.updateProfile(props.username, props.avatar)}/>
       </div>
       <div className={styles.post_body}>
         <div>
@@ -112,7 +102,7 @@ const Post: React.FC<PROPS> = (props) => {
             <h3>
               <span
                 className={styles.post_headerUser}
-                onClick={() => pickUser(props.username, props.avatar)}
+                onClick={() => props.updateProfile(props.username, props.avatar)}
               >@{props.username}</span>
               <span className={styles.post_headerTime}>
                 {new Date(props.timestamp?.toDate()).toLocaleString()}
@@ -120,7 +110,9 @@ const Post: React.FC<PROPS> = (props) => {
             </h3>
           </div>
           <div className={styles.post_tweet}>
-            <p>{props.text}</p>
+            {props.trainingArray.map((record: any) => (
+              <p className="text-lg text-white font-bold">{record.trainingName} {record.trainingWeight}✖︎{record.trainingReps}回</p>
+            ))}
           </div>
         </div>
         {props.image && (
@@ -132,10 +124,13 @@ const Post: React.FC<PROPS> = (props) => {
           className={styles.post_commentIcon}
           onClick={() => setOpenComments(!openComments)}
         />
-        <DeleteIcon
+        {
+          user.uid === props.postUid &&
+          <DeleteIcon
           className={styles.post_deleteIcon}
           onClick={deletePost}
         />
+        }
         {openComments && (
           <>
             {
@@ -176,5 +171,4 @@ const Post: React.FC<PROPS> = (props) => {
     </div>
   )
 }
-
 export default Post

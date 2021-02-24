@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -72,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(10)
   }
 }));
-
 const Auth:React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -146,7 +145,6 @@ const Auth:React.FC = () => {
             {isLogin ? "Login" : "Register"}
           </Typography>
           <form className={classes.form} noValidate>
-
             {!isLogin && (
               <>
                 <TextField
@@ -245,7 +243,6 @@ const Auth:React.FC = () => {
             >
               {isLogin ? "Login" : "Register"}
             </Button>
-
             <Grid container>
               <Grid item xs>
                 <span
@@ -261,13 +258,13 @@ const Auth:React.FC = () => {
                 </span>
               </Grid>
             </Grid>
-
             <Button
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
               onClick={signInGoogle}
+              startIcon={<CameraIcon/>}
             >
               SignIn with Google
             </Button>

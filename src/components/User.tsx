@@ -1,11 +1,15 @@
 import React from 'react'
 import styles from './User.module.scss'
-import { Avatar, createStyles, makeStyles, Theme } from "@material-ui/core";
-import { useSelector } from "react-redux";
-import { selectUser } from "../features/userSlice";
 import { auth } from "../firebase";
 import { Grid } from "@material-ui/core";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {
+  Avatar,
+  createStyles,
+  makeStyles,
+  Theme,
+  Box,
+} from "@material-ui/core";
 
 interface PROPS {
   profileUserName: string;
@@ -20,28 +24,39 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 const User:React.FC<PROPS> = (props) => {
-  // const user = useSelector(selectUser);
   const classes = useStyles();
   return (
-    <div className={styles.user_profile}>
-      <Grid container alignItems="center">
-        <Grid
-          item xs
+    // <Box display="flex" alignItems="center" className={styles.user_profile}>
+    //   <Box mr={3}>
+    //     <Avatar className={classes.large} src={props.profileUserAvatar} />
+    //   </Box>
+    //   <Box>
+    //     <span className={styles.name}>{props.profileUserName}</span>
+    //     <button
+    //       className={styles.logout_button}
+    //       onClick={async () => {
+    //         await auth.signOut();
+    //       }}
+    //     >
+    //         <ExitToAppIcon/>
+    //     </button>
+    //   </Box>
+    // </Box>
+    <div className="flex justify-start items-center pt-5">
+      <Avatar className={classes.large} src={props.profileUserAvatar}/>
+      <div className="flex">
+        <h3 className="font-bold text-xl text-white ml-5">
+          {props.profileUserName}
+        </h3>
+        <button
+          className="cursor-pointer bg-transparent border-none outline-none text-white"
+          onClick={async () => {
+            await auth.signOut();
+          }}
         >
-          <Avatar className={classes.large} src={props.profileUserAvatar} />
-        </Grid>
-        <Grid item xs={10}>
-          <span className={styles.name}>{props.profileUserName}</span>
-          <button
-            className={styles.logout_button}
-            onClick={async () => {
-              await auth.signOut();
-            }}
-          >
-              <ExitToAppIcon/>
-          </button>
-        </Grid>
-      </Grid>
+          <ExitToAppIcon/>
+        </button>
+      </div>
     </div>
   )
 }
