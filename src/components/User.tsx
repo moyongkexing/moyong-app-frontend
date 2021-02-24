@@ -26,22 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
 const User:React.FC<PROPS> = (props) => {
   const classes = useStyles();
   return (
-    // <Box display="flex" alignItems="center" className={styles.user_profile}>
-    //   <Box mr={3}>
-    //     <Avatar className={classes.large} src={props.profileUserAvatar} />
-    //   </Box>
-    //   <Box>
-    //     <span className={styles.name}>{props.profileUserName}</span>
-    //     <button
-    //       className={styles.logout_button}
-    //       onClick={async () => {
-    //         await auth.signOut();
-    //       }}
-    //     >
-    //         <ExitToAppIcon/>
-    //     </button>
-    //   </Box>
-    // </Box>
     <div className="flex justify-start items-center pt-5">
       <Avatar className={classes.large} src={props.profileUserAvatar}/>
       <div className="flex">
