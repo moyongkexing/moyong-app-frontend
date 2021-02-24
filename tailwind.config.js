@@ -10,7 +10,9 @@ module.exports = {
         'disableBtn': 'gray',
         'disablePhoto': 'gray',
         'appBg': '#444447',
-      }
+        'toggleLoginBtn': '#0000ff',
+        'setAvatarBtn': '#303f9e',
+      },
     },
   },
   variants: {

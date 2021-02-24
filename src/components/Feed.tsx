@@ -52,7 +52,7 @@ const Feed: React.FC = () => {
   }
   return (
     <div className="grid grid-rows-3 grid-cols-5 grid-flow-col gap-6">
-      <div className="row-span-1 col-span-2">
+      <div className="row-span-1 col-span-2 bg-gray-800">
         <User
           profileUserName={profileUser.profileUserName}
           profileUserAvatar={profileUser.avatar}
@@ -61,7 +61,7 @@ const Feed: React.FC = () => {
       <div className="row-span-2 col-span-2 bg-gray-800">
         <TrainingInput />
       </div>
-      <div className="row-span-3 col-span-3">
+      <div className="row-span-3 col-span-3 bg-gray-800">
         {posts.length 
             ?
             <>

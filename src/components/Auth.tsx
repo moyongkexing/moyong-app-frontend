@@ -142,7 +142,7 @@ const Auth:React.FC = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            {isLogin ? "Login" : "Register"}
+            {isLogin ? "ログイン" : "会員登録"}
           </Typography>
           <form className={classes.form} noValidate>
             {!isLogin && (
@@ -169,12 +169,12 @@ const Auth:React.FC = () => {
                         fontSize="large"
                         className={
                           avatarImage
-                            ? styles.login_addIconLoaded
-                            : styles.login_addIcon
+                            ? "cursor-pointer text-setAvatarBtn"
+                            : "cursor-pointer text-gray-300"
                         }
                       />
                       <input
-                        className={styles.login_hiddenIcon}
+                        className="text-center hidden"
                         type="file"
                         onChange={onChangeImageHandler}
                       />
@@ -241,20 +241,20 @@ const Auth:React.FC = () => {
                   }
               }
             >
-              {isLogin ? "Login" : "Register"}
+              {isLogin ? "ログイン" : "登録"}
             </Button>
             <Grid container>
               <Grid item xs>
                 <span
-                  className={styles.login_reset}
+                  className="cursor-pointer"
                   onClick={() => setOpenModal(true)}
                 >
-                  Forgot password?
+                  パスワードをお忘れですか？
                 </span>
                 </Grid>
               <Grid item>
-                <span className={styles.login_toggleMode} onClick={()=>setIsLogin(!isLogin)}>
-                  {isLogin ? "Create new account?" : "Back to login"}
+                <span className="cursor-pointer text-toggleLoginBtn" onClick={()=>setIsLogin(!isLogin)}>
+                  {isLogin ? "アカウントを新規作成する" : "ログイン"}
                 </span>
               </Grid>
             </Grid>
@@ -271,7 +271,7 @@ const Auth:React.FC = () => {
           </form>
           <Modal open={openModal} onClose={() => setOpenModal(false)}>
             <div style={getModalStyle()} className={classes.modal}>
-              <div className={styles.login_modal}>
+              <div className="text-center">
                 <TextField
                   InputLabelProps={{
                     shrink: true,

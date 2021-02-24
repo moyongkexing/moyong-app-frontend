@@ -1,14 +1,11 @@
 import React from 'react'
-import styles from './User.module.scss'
 import { auth } from "../firebase";
-import { Grid } from "@material-ui/core";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {
   Avatar,
   createStyles,
   makeStyles,
   Theme,
-  Box,
 } from "@material-ui/core";
 
 interface PROPS {
