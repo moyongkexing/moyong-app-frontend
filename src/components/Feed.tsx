@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import TrainingInput from './TrainingInput';
-import styles from "./Feed.module.css";
 import Post from './Post';
-import { Grid, Box } from "@material-ui/core";
 import User from './User';
 import { selectUser } from "../features/userSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 const Feed: React.FC = () => {
-  const dispatch = useDispatch();
   const [ posts, setPosts] = useState([{
       id: "",
       avatar: "",
@@ -54,38 +51,38 @@ const Feed: React.FC = () => {
     })
   }
   return (
-    <Grid container className={styles.feed}>
-      <Grid item md={4}>
-        <Box display="flex" justifyContent="flex-start">
-          <User
-            profileUserName={profileUser.profileUserName}
-            profileUserAvatar={profileUser.avatar}
-          />
-        </Box>
-      </Grid>
-      <Grid item md={8}>
+    <div className="grid grid-rows-3 grid-cols-5 grid-flow-col gap-6">
+      <div className="row-span-1 col-span-2">
+        <User
+          profileUserName={profileUser.profileUserName}
+          profileUserAvatar={profileUser.avatar}
+        />
+      </div>
+      <div className="row-span-2 col-span-2">
         <TrainingInput />
+      </div>
+      <div className="row-span-3 col-span-3">
         {posts.length 
-          ?
-          <>
-            {posts.map((post) => (
-              <Post
-                key={post.id}
-                postId={post.id}
-                avatar={post.avatar}
-                image={post.image}
-                trainingArray={post.trainingArray}
-                timestamp={post.timestamp}
-                username={post.username}
-                postUid={post.uid}
-                updateProfile={updateProfile}
-              />
-            ))}
-          </>
-          : <p>no posts...</p>
-        }
-      </Grid>
-    </Grid>
+            ?
+            <>
+              {posts.map((post) => (
+                <Post
+                  key={post.id}
+                  postId={post.id}
+                  avatar={post.avatar}
+                  image={post.image}
+                  trainingArray={post.trainingArray}
+                  timestamp={post.timestamp}
+                  username={post.username}
+                  postUid={post.uid}
+                  updateProfile={updateProfile}
+                />
+              ))}
+            </>
+            : <p>no posts...</p>
+          }
+      </div>
+    </div>
   );
 }
 export default Feed

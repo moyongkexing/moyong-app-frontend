@@ -26,22 +26,38 @@ const useStyles = makeStyles((theme: Theme) =>
 const User:React.FC<PROPS> = (props) => {
   const classes = useStyles();
   return (
-    <Box display="flex" alignItems="center" className={styles.user_profile}>
-      <Box mr={3}>
-        <Avatar className={classes.large} src={props.profileUserAvatar} />
-      </Box>
-      <Box>
-        <span className={styles.name}>{props.profileUserName}</span>
+    // <Box display="flex" alignItems="center" className={styles.user_profile}>
+    //   <Box mr={3}>
+    //     <Avatar className={classes.large} src={props.profileUserAvatar} />
+    //   </Box>
+    //   <Box>
+    //     <span className={styles.name}>{props.profileUserName}</span>
+    //     <button
+    //       className={styles.logout_button}
+    //       onClick={async () => {
+    //         await auth.signOut();
+    //       }}
+    //     >
+    //         <ExitToAppIcon/>
+    //     </button>
+    //   </Box>
+    // </Box>
+    <div className="flex justify-start items-center pt-5">
+      <Avatar className={classes.large} src={props.profileUserAvatar}/>
+      <div className="flex">
+        <h3 className="font-bold text-xl text-white ml-5">
+          {props.profileUserName}
+        </h3>
         <button
-          className={styles.logout_button}
+          className="cursor-pointer bg-transparent border-none outline-none text-white"
           onClick={async () => {
             await auth.signOut();
           }}
         >
-            <ExitToAppIcon/>
+          <ExitToAppIcon/>
         </button>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

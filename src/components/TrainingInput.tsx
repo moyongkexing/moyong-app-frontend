@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import styles from "./TrainingInput.module.scss";
+import styles from "./TrainingInput.module.css";
 import { storage, db, auth } from "../firebase";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import SaveIcon from '@material-ui/icons/Save';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {
   Avatar,
@@ -18,6 +19,11 @@ import {
   InputLabel,
   Select,
   Theme,
+  Grid,
+  Box,
+  Icon,
+  Typography,
+  Slider,
 } from "@material-ui/core";
 
 interface TrainingRecord {
@@ -25,7 +31,9 @@ interface TrainingRecord {
   trainingWeight: string;
   trainingReps: string;
 }
-
+function valuetext(value: number) {
+  return `${value}`;
+}
 const weightList = [
   {value: 'none', label: 'none'},
   {value: '10', label: '10lbs | 4.5kg'},
@@ -58,6 +66,9 @@ const useStyles = makeStyles((theme: Theme) =>
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
+    button: {
+      margin: theme.spacing(1),
+    },
   }),
 );
 const TrainingInput: React.FC = () => {
@@ -67,7 +78,7 @@ const TrainingInput: React.FC = () => {
   const [ trainingRecord, setTrainingRecord ] = useState<TrainingRecord>({
     trainingName: "",
     trainingWeight: "none",
-    trainingReps: "0",
+    trainingReps: "",
   })
   const [ trainingRecords, setTrainingRecords ] = useState<TrainingRecord[]>([]);
   const saveTrainingRecord = () => {
@@ -75,7 +86,7 @@ const TrainingInput: React.FC = () => {
     setTrainingRecord({
       trainingName: "",
       trainingWeight: "none",
-      trainingReps: "0",
+      trainingReps: "",
     })
     console.log(trainingRecords);
   };
@@ -132,23 +143,29 @@ const TrainingInput: React.FC = () => {
     setImage(null);
     setTrainingRecords([]);
   };
+  const getValue = (e: React.ChangeEvent<{}>, value: number | number[]) => {
+    // setTrainingRecord({...trainingRecord, trainingReps: e.target.value})
+    console.log(value);
+  }
   return (
-    <>
-      <form onSubmit={postTrainingRecords}>
-        <div className={styles.tweet_form}>
-          <Avatar
-            className={styles.tweet_avatar}
-            src={user.photoUrl}
-          />
+    <form onSubmit={postTrainingRecords}>
+      <Grid container className="mt-7">
+        <Grid container item xs={12} className="flex items-center">
+          <Grid xs>
+            <Avatar
+              className={styles.tweet_avatar}
+              src={user.photoUrl}
+            />
+          </Grid>
           <input
-            className={styles.trainingName}
+            className="ml-10 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg"
             placeholder="What kind of training?"
             type="text"
             value={trainingRecord.trainingName}
             onChange={(e) => setTrainingRecord({...trainingRecord, trainingName: e.target.value})}
           />
           <select
-            className={styles.trainingWeight}
+            className="ml-3 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg "
             value={trainingRecord.trainingWeight}
             onChange={(e) => setTrainingRecord({...trainingRecord, trainingWeight: e.target.value})}
           >
@@ -159,48 +176,82 @@ const TrainingInput: React.FC = () => {
             ))}
           </select>
           <input
+            className="relative ml-3 w-1/12 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg appearance-none no-spin::-webkit-inner-spin-button o-spin::-webkit-outer-spin-button"
             min="0"
-            className={styles.trainingReps}
             placeholder="reps"
             type="number"
             value={trainingRecord.trainingReps}
             onChange={(e) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
           />
-          {/* <button
+          {/* <Typography id="discrete-slider" gutterBottom>
+            Temperature
+          </Typography>
+          <Slider
+            defaultValue={0}
+            // getAriaValueText={valuetext}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="on"
+            step={1}
+            marks
+            min={0}
+            max={110}
+            // onChange={(e, value) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
+            onDragStop={getValue}
+          /> */}
+          <IconButton
             disabled={!trainingRecord.trainingName}
-            className={
-              trainingRecord.trainingName ? styles.saveTrainingRecord : styles.saveTrainingRecordDisableBtn
-            }
           >
-            <AddCircleIcon
-              onClick={() => saveTrainingRecord()}
-            />
-          </button> */}
-          <button
-            disabled={!trainingRecord.trainingName}
-          >
-            <AddCircleIcon
-              onClick={() => saveTrainingRecord()}
-              className={
-                trainingRecord.trainingName ? styles.saveTrainingRecord : styles.saveTrainingRecordDisableBtn
-              }
-            />
-          </button>
-          <IconButton>
             <label>
-              <AddPhotoAlternateIcon
+              <SaveIcon
+                onClick={() => saveTrainingRecord()}
                 className={
-                  image ? styles.tweet_addIconLoaded : styles.tweet_addIcon
+                  trainingRecord.trainingName
+                  ? "text-enableSave cursor-pointer"
+                  : "text-disableSave cursor-pointer"
                 }
-              />
-              <input
-                className={styles.tweet_hiddenIcon}
-                type="file"
-                onChange={onChangeImageHandler}
               />
             </label>
           </IconButton>
-        </div>
+        </Grid>
+
+
+        <Grid item xs={12}>
+          
+          <table className="table-auto text-center whitespace-no-wrap my-7 mx-8">
+            <tbody>
+              {trainingRecords.map((record) => (
+                <tr>
+                  <td className="text-white font-bold px-4 py-3 w-5/12">{record.trainingName}</td>
+                  <td className="text-white font-bold px-4 py-3">{record.trainingWeight}</td>
+                  <td className="text-white font-bold px-4 py-3 w-1/12">{record.trainingReps}回</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Grid>
+
+
+
+
+
+
+        <Grid item xs={12} className="flex justify-end">
+        <IconButton>
+          <label>
+            <AddPhotoAlternateIcon
+              className={
+                image
+                ? "text-white cursor-pointer outline-none"
+                : "text-disablePhoto cursor-pointer outline-none"
+              }
+            />
+            <input
+              className="hidden"
+              type="file"
+              onChange={onChangeImageHandler}
+            />
+          </label>
+        </IconButton>
         <Button
           type="submit"
           disabled={!trainingRecords.length}
@@ -210,12 +261,9 @@ const TrainingInput: React.FC = () => {
         >
           Tweet
         </Button>
-      </form>
-      <ul>
-        {trainingRecords.map((record) => (
-          <p className="text-lg text-white font-bold">{record.trainingName} {record.trainingWeight}✖︎{record.trainingReps}回</p>        ))}
-      </ul>
-    </>
+        </Grid>
+      </Grid>
+    </form>
   );
 }
 export default TrainingInput;
