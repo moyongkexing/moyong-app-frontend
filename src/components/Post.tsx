@@ -13,7 +13,7 @@ interface PROPS {
   postId: string;
   avatar: string;
   image: string;
-  text: string;
+  trainingArray: any;
   timestamp: any;
   username: string;
   postUid: string;
@@ -50,7 +50,7 @@ const Post: React.FC<PROPS> = (props) => {
   ]);
   const newComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    db.collection("posts").doc(props.postId).collection("comments").add({
+    db.collection("training_posts").doc(props.postId).collection("comments").add({
       avatar: user.photoUrl,
       text: comment,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -61,33 +61,33 @@ const Post: React.FC<PROPS> = (props) => {
   // 投稿削除
   const deletePost = () => {
     if (user.uid === props.postUid) {
-      db.collection("posts").doc(props.postId).delete();
+      db.collection("training_posts").doc(props.postId).delete();
     } else {
       console.log("failed to delete!")
     }
   };
   // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
-  useEffect(() => {
-    const unSub = db
-      .collection("posts")
-      .doc(props.postId)
-      .collection("comments")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        setComments(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            avatar: doc.data().avatar,
-            text: doc.data().text,
-            username: doc.data().username,
-            timestamp: doc.data().timestamp,
-          }))
-        );
-      });
-    return () => {
-      unSub();
-    };
-  }, [props.postId]);
+  // useEffect(() => {
+  //   const unSub = db
+  //     .collection("training_posts")
+  //     .doc(props.postId)
+  //     .collection("comments")
+  //     .orderBy("timestamp", "desc")
+  //     .onSnapshot((snapshot) => {
+  //       setComments(
+  //         snapshot.docs.map((doc) => ({
+  //           id: doc.id,
+  //           avatar: doc.data().avatar,
+  //           text: doc.data().text,
+  //           username: doc.data().username,
+  //           timestamp: doc.data().timestamp,
+  //         }))
+  //       );
+  //     });
+  //   return () => {
+  //     unSub();
+  //   };
+  // }, [props.postId]);
   return (
     <div className={styles.post}>
       <div className={styles.post_avatar}>
@@ -110,7 +110,9 @@ const Post: React.FC<PROPS> = (props) => {
             </h3>
           </div>
           <div className={styles.post_tweet}>
-            <p>{props.text}</p>
+            {props.trainingArray.map((record: any) => (
+              <p className="text-lg text-white font-bold">{record.trainingName} {record.trainingWeight}✖︎{record.trainingReps}回</p>
+            ))}
           </div>
         </div>
         {props.image && (

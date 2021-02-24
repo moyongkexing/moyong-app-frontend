@@ -166,10 +166,26 @@ const TrainingInput: React.FC = () => {
             value={trainingRecord.trainingReps}
             onChange={(e) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
           />
-          <AddCircleIcon
-            className={styles.saveTrainingRecord}
-            onClick={() => saveTrainingRecord()}
-          />
+          {/* <button
+            disabled={!trainingRecord.trainingName}
+            className={
+              trainingRecord.trainingName ? styles.saveTrainingRecord : styles.saveTrainingRecordDisableBtn
+            }
+          >
+            <AddCircleIcon
+              onClick={() => saveTrainingRecord()}
+            />
+          </button> */}
+          <button
+            disabled={!trainingRecord.trainingName}
+          >
+            <AddCircleIcon
+              onClick={() => saveTrainingRecord()}
+              className={
+                trainingRecord.trainingName ? styles.saveTrainingRecord : styles.saveTrainingRecordDisableBtn
+              }
+            />
+          </button>
           <IconButton>
             <label>
               <AddPhotoAlternateIcon
@@ -197,8 +213,7 @@ const TrainingInput: React.FC = () => {
       </form>
       <ul>
         {trainingRecords.map((record) => (
-          <li key={record.trainingName}>{record.trainingName} + {record.trainingWeight} + {record.trainingReps}</li>
-        ))}
+          <p className="text-lg text-white font-bold">{record.trainingName} {record.trainingWeight}✖︎{record.trainingReps}回</p>        ))}
       </ul>
     </>
   );

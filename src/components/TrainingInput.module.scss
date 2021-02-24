@@ -59,8 +59,8 @@
   display: none;
 }
 .tweet_sendBtn {
-  background-color: #00bfff !important;
   border: none !important;
+  background-color: #00bfff !important;
   color: white !important;
   font-weight: 800 !important;
   text-transform: inherit !important;
@@ -70,8 +70,8 @@
   margin-left: 80% !important;
 }
 .tweet_sendDisableBtn {
-  background-color: gray !important;
   border: none !important;
+  background-color: gray !important;
   color: white !important;
   font-weight: 900 !important;
   text-transform: inherit !important;
@@ -83,10 +83,15 @@
 }
 .saveTrainingRecord {
   margin-top: 15px;
-  color: #00bfff;
+  color: #00bfff !important;
   cursor: pointer;
   margin-left: 20px;
-  
+}
+.saveTrainingRecordDisableBtn {
+  margin-top: 15px;
+  color: gray !important;
+  cursor: pointer;
+  margin-left: 20px;
 }
 .no-spin::-webkit-inner-spin-button,
 .no-spin::-webkit-outer-spin-button {

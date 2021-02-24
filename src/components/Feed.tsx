@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { auth, db } from "../firebase";
-import PostInput from './TrainingInput';
+import TrainingInput from './TrainingInput';
 import styles from "./Feed.module.css";
 import Post from './Post';
 import { Grid, Box } from "@material-ui/core";
@@ -13,7 +13,7 @@ const Feed: React.FC = () => {
       id: "",
       avatar: "",
       image: "",
-      text: "",
+      trainingArray: [],
       timestamp: null,
       username: "",
       uid: "",
@@ -28,14 +28,14 @@ const Feed: React.FC = () => {
   // データベースから投稿一覧を取得してstateに入れる
   useEffect(() => {
     const unSub = db
-    .collection("posts")
+    .collection("training_posts")
     .orderBy("timestamp", "desc")
     .onSnapshot((snapshot) => setPosts(
       snapshot.docs.map((doc) => ({
         id: doc.id,
         avatar: doc.data().avatar,
         image: doc.data().image,
-        text: doc.data().text,
+        trainingArray: doc.data().training_array,
         timestamp: doc.data().timestamp,
         username: doc.data().username,
         uid: doc.data().uid
@@ -64,8 +64,9 @@ const Feed: React.FC = () => {
         </Box>
       </Grid>
       <Grid item md={8}>
-        <PostInput />
-        {/* {posts[0].id &&
+        <TrainingInput />
+        {posts.length 
+          ?
           <>
             {posts.map((post) => (
               <Post
@@ -73,7 +74,7 @@ const Feed: React.FC = () => {
                 postId={post.id}
                 avatar={post.avatar}
                 image={post.image}
-                text={post.text}
+                trainingArray={post.trainingArray}
                 timestamp={post.timestamp}
                 username={post.username}
                 postUid={post.uid}
@@ -81,7 +82,8 @@ const Feed: React.FC = () => {
               />
             ))}
           </>
-        } */}
+          : <p>no posts...</p>
+        }
       </Grid>
     </Grid>
   );
