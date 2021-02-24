@@ -6,8 +6,8 @@ module.exports = {
       colors: {
         'inputBg': '#e1e1e1',
         'inputText': '#333333',
-        'enableSave': '#00bfff',
-        'disableSave': 'gray',
+        'enableBtn': '#00bfff',
+        'disableBtn': 'gray',
         'disablePhoto': 'gray',
       }
     },

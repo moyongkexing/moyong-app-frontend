@@ -1,38 +1,22 @@
 import React, { useState } from "react";
-import styles from "./TrainingInput.module.css";
-import { storage, db, auth } from "../firebase";
+import styles from './TrainingInput.module.css';
+import { storage, db } from "../firebase";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import SaveIcon from '@material-ui/icons/Save';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import SendIcon from '@material-ui/icons/Send';
 import {
   Avatar,
-  Button,
   IconButton,
-  TextField,
-  MenuItem,
-  createStyles,
-  makeStyles,
-  FormControl,
-  InputLabel,
-  Select,
   Theme,
-  Grid,
-  Box,
-  Icon,
-  Typography,
-  Slider,
 } from "@material-ui/core";
 
 interface TrainingRecord {
   trainingName: string;
   trainingWeight: string;
   trainingReps: string;
-}
-function valuetext(value: number) {
-  return `${value}`;
 }
 const weightList = [
   {value: 'none', label: 'none'},
@@ -57,23 +41,8 @@ const weightList = [
   {value: '190', label: '190lbs | 86kg'},
   {value: '200', label: '200lbs | 91kg'},
 ];
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-    button: {
-      margin: theme.spacing(1),
-    },
-  }),
-);
 const TrainingInput: React.FC = () => {
   const user = useSelector(selectUser);
-  const classes = useStyles();
   const [ image, setImage] = useState<File | null>(null);
   const [ trainingRecord, setTrainingRecord ] = useState<TrainingRecord>({
     trainingName: "",
@@ -143,126 +112,85 @@ const TrainingInput: React.FC = () => {
     setImage(null);
     setTrainingRecords([]);
   };
-  const getValue = (e: React.ChangeEvent<{}>, value: number | number[]) => {
-    // setTrainingRecord({...trainingRecord, trainingReps: e.target.value})
-    console.log(value);
-  }
   return (
-    <form onSubmit={postTrainingRecords}>
-      <Grid container className="mt-7">
-        <Grid container item xs={12} className="flex items-center">
-          <Grid xs>
-            <Avatar
-              className={styles.tweet_avatar}
-              src={user.photoUrl}
-            />
-          </Grid>
-          <input
-            className="ml-10 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg"
-            placeholder="What kind of training?"
-            type="text"
-            value={trainingRecord.trainingName}
-            onChange={(e) => setTrainingRecord({...trainingRecord, trainingName: e.target.value})}
+    <form onSubmit={postTrainingRecords} className="flex flex-col ">
+      <Avatar
+        className={styles.tweet_avatar}
+        src={user.photoUrl}
+      />
+      <input
+        className="bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg"
+        placeholder="What kind of training?"
+        type="text"
+        value={trainingRecord.trainingName}
+        onChange={(e) => setTrainingRecord({...trainingRecord, trainingName: e.target.value})}
+      />
+      <select
+        className="mt-4 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg "
+        value={trainingRecord.trainingWeight}
+        onChange={(e) => setTrainingRecord({...trainingRecord, trainingWeight: e.target.value})}
+      >
+        {weightList.map((weight) => (
+          <option key={weight.value} value={weight.value}>
+            {weight.label}
+          </option>
+        ))}
+      </select>
+      <input
+        className="mt-4 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg appearance-none no-spin::-webkit-inner-spin-button o-spin::-webkit-outer-spin-button"
+        min="0"
+        placeholder="reps"
+        type="number"
+        value={trainingRecord.trainingReps}
+        onChange={(e) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
+      />
+      <IconButton
+        disabled={!trainingRecord.trainingName}
+      >
+        <label>
+          <SaveIcon
+            onClick={() => saveTrainingRecord()}
+            className={
+              trainingRecord.trainingName
+              ? "text-enableBtn cursor-pointer"
+              : "text-disableBtn cursor-pointer"
+            }
           />
-          <select
-            className="ml-3 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg "
-            value={trainingRecord.trainingWeight}
-            onChange={(e) => setTrainingRecord({...trainingRecord, trainingWeight: e.target.value})}
-          >
-            {weightList.map((weight) => (
-              <option key={weight.value} value={weight.value}>
-                {weight.label}
-              </option>
-            ))}
-          </select>
-          <input
-            className="relative ml-3 w-1/12 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg appearance-none no-spin::-webkit-inner-spin-button o-spin::-webkit-outer-spin-button"
-            min="0"
-            placeholder="reps"
-            type="number"
-            value={trainingRecord.trainingReps}
-            onChange={(e) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
+        </label>
+      </IconButton>
+      {trainingRecords.map((record) => (
+        <tr>
+          <td className="text-white font-bold px-4 py-3 w-5/12">{record.trainingName}</td>
+          <td className="text-white font-bold px-4 py-3">{record.trainingWeight}</td>
+          <td className="text-white font-bold px-4 py-3 w-1/12">{record.trainingReps}回</td>
+        </tr>
+      ))}
+      <IconButton>
+        <label>
+          <AddPhotoAlternateIcon
+            className={
+              image
+              ? "text-white cursor-pointer outline-none"
+              : "text-disableBtn cursor-pointer outline-none"
+            }
           />
-          {/* <Typography id="discrete-slider" gutterBottom>
-            Temperature
-          </Typography>
-          <Slider
-            defaultValue={0}
-            // getAriaValueText={valuetext}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="on"
-            step={1}
-            marks
-            min={0}
-            max={110}
-            // onChange={(e, value) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
-            onDragStop={getValue}
-          /> */}
-          <IconButton
-            disabled={!trainingRecord.trainingName}
-          >
-            <label>
-              <SaveIcon
-                onClick={() => saveTrainingRecord()}
-                className={
-                  trainingRecord.trainingName
-                  ? "text-enableSave cursor-pointer"
-                  : "text-disableSave cursor-pointer"
-                }
-              />
-            </label>
-          </IconButton>
-        </Grid>
-
-
-        <Grid item xs={12}>
-          
-          <table className="table-auto text-center whitespace-no-wrap my-7 mx-8">
-            <tbody>
-              {trainingRecords.map((record) => (
-                <tr>
-                  <td className="text-white font-bold px-4 py-3 w-5/12">{record.trainingName}</td>
-                  <td className="text-white font-bold px-4 py-3">{record.trainingWeight}</td>
-                  <td className="text-white font-bold px-4 py-3 w-1/12">{record.trainingReps}回</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Grid>
-
-
-
-
-
-
-        <Grid item xs={12} className="flex justify-end">
-        <IconButton>
-          <label>
-            <AddPhotoAlternateIcon
-              className={
-                image
-                ? "text-white cursor-pointer outline-none"
-                : "text-disablePhoto cursor-pointer outline-none"
-              }
-            />
-            <input
-              className="hidden"
-              type="file"
-              onChange={onChangeImageHandler}
-            />
-          </label>
-        </IconButton>
-        <Button
-          type="submit"
-          disabled={!trainingRecords.length}
-          className={
-            trainingRecords.length ? styles.tweet_sendBtn : styles.tweet_sendDisableBtn
-          }
-        >
-          Tweet
-        </Button>
-        </Grid>
-      </Grid>
+          <input
+            className="hidden"
+            type="file"
+            onChange={onChangeImageHandler}
+          />
+        </label>
+      </IconButton>
+      <button
+        type="submit"
+        disabled={!trainingRecords.length}
+        className={trainingRecords.length
+          ? "border-none bg-enableBtn text-white rounded-3xl font-bold cursor-pointer"
+          : "border-none bg-disableBtn text-white rounded-3xl font-bold cursor-pointer"
+        }
+      >
+        Post{<SendIcon/>}
+      </button>
     </form>
   );
 }
