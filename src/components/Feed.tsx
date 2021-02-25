@@ -62,7 +62,7 @@ const Feed: React.FC = () => {
       <div className="row-span-2 col-span-2 w-28rem">
         <TrainingInput />
       </div>
-      <div className="row-span-3 col-span-3 overflow-y-auto">
+      {/* <div className="row-span-3 col-span-3 overflow-y-auto">
         {posts.length 
             ?
             <>
@@ -82,8 +82,8 @@ const Feed: React.FC = () => {
             </>
             : <p>no posts...</p>
           }
-      </div>
-      {/* <div className="row-span-3 col-span-3">
+      </div> */}
+      <div className="row-span-3 col-span-3">
         <div className={styles.scroll}>
           {posts.length 
               ?
@@ -105,7 +105,7 @@ const Feed: React.FC = () => {
               : <p>no posts...</p>
             }
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
