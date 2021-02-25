@@ -6,10 +6,17 @@ module.exports = {
       colors: {
         'inputBg': '#e1e1e1',
         'inputText': '#333333',
-        'enableSave': '#00bfff',
-        'disableSave': 'gray',
+        'enableBtn': '#00bfff',
+        'disableBtn': 'gray',
         'disablePhoto': 'gray',
-      }
+        'appBg': '#444447',
+        'toggleLoginBtn': '#0000ff',
+        'setAvatarBtn': '#303f9e',
+        'whiteSmoke': '#f5f5f5',
+      },
+      spacing: {
+        '28rem': '28rem',
+      },
     },
   },
   variants: {
