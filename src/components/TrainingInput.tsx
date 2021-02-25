@@ -1,16 +1,23 @@
 import React, { useState } from "react";
-import styles from './TrainingInput.module.css';
 import { storage, db } from "../firebase";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
-import SaveIcon from '@material-ui/icons/Save';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SendIcon from '@material-ui/icons/Send';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {
   Avatar,
   IconButton,
+  makeStyles,
+  createStyles,
   Theme,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
 } from "@material-ui/core";
 
 interface TrainingRecord {
@@ -19,34 +26,56 @@ interface TrainingRecord {
   trainingReps: string;
 }
 const weightList = [
-  {value: 'none', label: 'none'},
-  {value: '10', label: '10lbs | 4.5kg'},
-  {value: '20', label: '20lbs | 9kg'},
-  {value: '30', label: '30lbs | 14kg'},
-  {value: '40', label: '40lbs | 18kg'},
-  {value: '50', label: '50lbs | 23kg'},
-  {value: '60', label: '60lbs | 27kg'},
-  {value: '70', label: '70lbs | 32kg'},
-  {value: '80', label: '80lbs | 36kg'},
-  {value: '90', label: '90lbs | 41kg'},
-  {value: '100', label: '100lbs | 45kg'},
-  {value: '110', label: '110lbs | 50kg'},
-  {value: '120', label: '120lbs | 54kg'},
-  {value: '130', label: '130lbs | 59kg'},
-  {value: '140', label: '140lbs | 64kg'},
-  {value: '150', label: '150lbs | 68kg'},
-  {value: '160', label: '160lbs | 73kg'},
-  {value: '170', label: '170lbs | 77kg'},
-  {value: '180', label: '180lbs | 82kg'},
-  {value: '190', label: '190lbs | 86kg'},
-  {value: '200', label: '200lbs | 91kg'},
+  {value: 'none', label: 'なし'},
+  {value: '10lbs | 4.5kg', label: '10lbs | 4.5kg'},
+  {value: '20lbs | 9kg', label: '20lbs | 9kg'},
+  {value: '30lbs | 14kg', label: '30lbs | 14kg'},
+  {value: '40lbs | 18kg', label: '40lbs | 18kg'},
+  {value: '50lbs | 23kg', label: '50lbs | 23kg'},
+  {value: '60lbs | 27kg', label: '60lbs | 27kg'},
+  {value: '70lbs | 32kg', label: '70lbs | 32kg'},
+  {value: '80lbs | 36kg', label: '80lbs | 36kg'},
+  {value: '90lbs | 41kg', label: '90lbs | 41kg'},
+  {value: '100lbs | 45kg', label: '100lbs | 45kg'},
+  {value: '110lbs | 50kg', label: '110lbs | 50kg'},
+  {value: '120lbs | 54kg', label: '120lbs | 54kg'},
+  {value: '130lbs | 59kg', label: '130lbs | 59kg'},
+  {value: '140lbs | 64kg', label: '140lbs | 64kg'},
+  {value: '150lbs | 68kg', label: '150lbs | 68kg'},
+  {value: '160lbs | 73kg', label: '160lbs | 73kg'},
+  {value: '170lbs | 77kg', label: '170lbs | 77kg'},
+  {value: '180lbs | 82kg', label: '180lbs | 82kg'},
+  {value: '190lbs | 86kg', label: '190lbs | 86kg'},
+  {value: '200lbs | 91kg', label: '200lbs | 91kg'},
 ];
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    small: {
+      width: theme.spacing(4),
+      height: theme.spacing(4),
+    },
+    large: {
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+    demo: {
+      backgroundColor: theme.palette.background.paper,
+    },
+    title: {
+      margin: theme.spacing(4, 0, 2),
+    },
+  }),
+);
 const TrainingInput: React.FC = () => {
+  const classes = useStyles();
   const user = useSelector(selectUser);
   const [ image, setImage] = useState<File | null>(null);
   const [ trainingRecord, setTrainingRecord ] = useState<TrainingRecord>({
     trainingName: "",
-    trainingWeight: "none",
+    trainingWeight: "10lbs | 4.5kg",
     trainingReps: "",
   })
   const [ trainingRecords, setTrainingRecords ] = useState<TrainingRecord[]>([]);
@@ -54,7 +83,7 @@ const TrainingInput: React.FC = () => {
     setTrainingRecords([...trainingRecords, trainingRecord]);
     setTrainingRecord({
       trainingName: "",
-      trainingWeight: "none",
+      trainingWeight: "10lbs | 4.5kg",
       trainingReps: "",
     })
     console.log(trainingRecords);
@@ -113,84 +142,104 @@ const TrainingInput: React.FC = () => {
     setTrainingRecords([]);
   };
   return (
-    <form onSubmit={postTrainingRecords} className="flex flex-col ">
+    <form onSubmit={postTrainingRecords} className="flex flex-col items-center">
       <Avatar
-        className={styles.tweet_avatar}
+        className={classes.large}
         src={user.photoUrl}
       />
-      <input
-        className="bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg"
-        placeholder="What kind of training?"
-        type="text"
-        value={trainingRecord.trainingName}
-        onChange={(e) => setTrainingRecord({...trainingRecord, trainingName: e.target.value})}
-      />
-      <select
-        className="mt-4 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg "
-        value={trainingRecord.trainingWeight}
-        onChange={(e) => setTrainingRecord({...trainingRecord, trainingWeight: e.target.value})}
-      >
-        {weightList.map((weight) => (
-          <option key={weight.value} value={weight.value}>
-            {weight.label}
-          </option>
-        ))}
-      </select>
-      <input
-        className="mt-4 bg-inputBg text-inputText p-3.5 rounded-3xl outline-none border-none text-lg appearance-none no-spin::-webkit-inner-spin-button o-spin::-webkit-outer-spin-button"
-        min="0"
-        placeholder="reps"
-        type="number"
-        value={trainingRecord.trainingReps}
-        onChange={(e) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
-      />
-      <IconButton
-        disabled={!trainingRecord.trainingName}
-      >
-        <label>
-          <SaveIcon
-            onClick={() => saveTrainingRecord()}
-            className={
-              trainingRecord.trainingName
-              ? "text-enableBtn cursor-pointer"
-              : "text-disableBtn cursor-pointer"
+      <div className="w-9/12 mt-5">
+        <input
+          className="w-full mt-4 bg-inputBg text-inputText px-4 py-2 rounded-3xl outline-none border-none text-lg"
+          placeholder="トレーニング名"
+          type="text"
+          value={trainingRecord.trainingName}
+          onChange={(e) => setTrainingRecord({...trainingRecord, trainingName: e.target.value})}
+        />
+        <select
+          className="w-full mt-4 bg-inputBg text-inputText px-4 py-2 rounded-3xl outline-none border-none text-lg"
+          value={trainingRecord.trainingWeight}
+          onChange={(e) => setTrainingRecord({...trainingRecord, trainingWeight: e.target.value})}
+        >
+          {weightList.map((weight) => (
+            <option key={weight.value} value={weight.value}>
+              {weight.label}
+            </option>
+          ))}
+        </select>
+        <input
+          className="w-9/12 mt-4 bg-inputBg text-inputText px-4 py-2 rounded-3xl outline-none border-none text-lg appearance-none no-spin::-webkit-inner-spin-button o-spin::-webkit-outer-spin-button"
+          min="0"
+          placeholder="reps"
+          type="number"
+          value={trainingRecord.trainingReps}
+          onChange={(e) => setTrainingRecord({...trainingRecord, trainingReps: e.target.value})}
+        />
+        <IconButton
+          disabled={!trainingRecord.trainingName}
+          className="w-3/12 focus:outline-none"
+        >
+          <label>
+            <AddCircleIcon
+              onClick={() => saveTrainingRecord()}
+              fontSize="large"
+              className={
+                trainingRecord.trainingName
+                ? "text-enableBtn cursor-pointer m-2"
+                : "text-disableBtn cursor-pointer m-2"
+              }
+            />
+          </label>
+        </IconButton>
+        <List dense={true} className="w-full">
+          {trainingRecords.map((record) => (
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar className={classes.small}>
+                  <FitnessCenterIcon/>
+                </Avatar>
+              </ListItemAvatar>
+              <div className="flex flex-col text-whiteSmoke font-bold w-full">
+                <p>{record.trainingName}</p>
+                <p className="text-sm">{record.trainingWeight} × {record.trainingReps}回</p>
+              </div>
+              <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="delete">
+                  <DeleteIcon className="cursor-pointer text-whiteSmoke"/>
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+        <div className="flex justify-between items-center">
+          <IconButton className="focus:outline-none">
+            <label>
+              <AddPhotoAlternateIcon
+                fontSize="large"
+                className={
+                  image
+                  ? "text-white cursor-pointer w-3 h-3"
+                  : "text-disableBtn cursor-pointer w-3 h-3"
+                }
+              />
+              <input
+                className="hidden"
+                type="file"
+                onChange={onChangeImageHandler}
+              />
+            </label>
+          </IconButton>
+          <button
+            type="submit"
+            disabled={!trainingRecords.length}
+            className={trainingRecords.length
+              ? "focus:outline-none border-none bg-enableBtn text-whiteSmoke rounded-3xl font-bold cursor-pointer py-2 px-4 text-lg"
+              : "focus:outline-none border-none bg-disableBtn text-whiteSmoke rounded-3xl font-bold cursor-none py-2 px-4 text-lg"
             }
-          />
-        </label>
-      </IconButton>
-      {trainingRecords.map((record) => (
-        <tr>
-          <td className="text-white font-bold px-4 py-3 w-5/12">{record.trainingName}</td>
-          <td className="text-white font-bold px-4 py-3">{record.trainingWeight}</td>
-          <td className="text-white font-bold px-4 py-3 w-1/12">{record.trainingReps}回</td>
-        </tr>
-      ))}
-      <IconButton>
-        <label>
-          <AddPhotoAlternateIcon
-            className={
-              image
-              ? "text-white cursor-pointer outline-none"
-              : "text-disableBtn cursor-pointer outline-none"
-            }
-          />
-          <input
-            className="hidden"
-            type="file"
-            onChange={onChangeImageHandler}
-          />
-        </label>
-      </IconButton>
-      <button
-        type="submit"
-        disabled={!trainingRecords.length}
-        className={trainingRecords.length
-          ? "border-none bg-enableBtn text-white rounded-3xl font-bold cursor-pointer"
-          : "border-none bg-disableBtn text-white rounded-3xl font-bold cursor-pointer"
-        }
-      >
-        Post{<SendIcon/>}
-      </button>
+          >
+            Post {<SendIcon/>}
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

@@ -12,6 +12,7 @@ module.exports = {
         'appBg': '#444447',
         'toggleLoginBtn': '#0000ff',
         'setAvatarBtn': '#303f9e',
+        'whiteSmoke': '#f5f5f5',
       },
       spacing: {
         '28rem': '28rem',
