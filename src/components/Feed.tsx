@@ -6,8 +6,21 @@ import Post from './Post';
 import User from './User';
 import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
+interface User {
+  profileUserName: string;
+  avatar: string;
+}
+interface Post {
+  id: string;
+  avatar: string;
+  image: string;
+  trainingArray: [];
+  timestamp: any;
+  username: string;
+  uid: string;
+}
 const Feed: React.FC = () => {
-  const [ posts, setPosts] = useState([{
+  const [ posts, setPosts] = useState<Post[]>([{
       id: "",
       avatar: "",
       image: "",
@@ -18,7 +31,7 @@ const Feed: React.FC = () => {
     },
   ]);
   const user = useSelector(selectUser);
-  const [profileUser, setProfileUser ] = useState({
+  const [profileUser, setProfileUser ] = useState<User>({
     profileUserName: user.displayName,
     avatar: user.photoUrl
     }
