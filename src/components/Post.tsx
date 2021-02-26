@@ -67,27 +67,27 @@ const Post: React.FC<PROPS> = (props) => {
     }
   };
   // データベースから投稿に紐づくコメント一覧を取得してstateに入れる
-  useEffect(() => {
-    const unSub = db
-      .collection("training_posts")
-      .doc(props.postId)
-      .collection("comments")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        setComments(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            avatar: doc.data().avatar,
-            text: doc.data().text,
-            username: doc.data().username,
-            timestamp: doc.data().timestamp,
-          }))
-        );
-      });
-    return () => {
-      unSub();
-    };
-  }, [props.postId]);
+  // useEffect(() => {
+  //   const unSub = db
+  //     .collection("training_posts")
+  //     .doc(props.postId)
+  //     .collection("comments")
+  //     .orderBy("timestamp", "desc")
+  //     .onSnapshot((snapshot) => {
+  //       setComments(
+  //         snapshot.docs.map((doc) => ({
+  //           id: doc.id,
+  //           avatar: doc.data().avatar,
+  //           text: doc.data().text,
+  //           username: doc.data().username,
+  //           timestamp: doc.data().timestamp,
+  //         }))
+  //       );
+  //     });
+  //   return () => {
+  //     unSub();
+  //   };
+  // }, [props.postId]);
   return (
     <div className={styles.post}>
       <div className={styles.post_avatar}>
