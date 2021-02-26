@@ -191,8 +191,8 @@ const TrainingInput: React.FC = () => {
           </label>
         </IconButton>
         <List dense={true} className="w-full">
-          {trainingRecords.map((record) => (
-            <ListItem>
+          {trainingRecords.map((record, index) => (
+            <ListItem key={index}>
               <ListItemAvatar>
                 <Avatar className={classes.small}>
                   <FitnessCenterIcon/>
