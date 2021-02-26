@@ -75,27 +75,6 @@ const Feed: React.FC = () => {
       <div className="row-span-2 col-span-2 w-28rem">
         <TrainingInput />
       </div>
-      {/* <div className="row-span-3 col-span-3 overflow-y-auto">
-        {posts.length 
-            ?
-            <>
-              {posts.map((post) => (
-                <Post
-                  key={post.id}
-                  postId={post.id}
-                  avatar={post.avatar}
-                  image={post.image}
-                  trainingArray={post.trainingArray}
-                  timestamp={post.timestamp}
-                  username={post.username}
-                  postUid={post.uid}
-                  updateProfile={updateProfile}
-                />
-              ))}
-            </>
-            : <p>no posts...</p>
-          }
-      </div> */}
       <div className="row-span-3 col-span-3">
         <div className={styles.scroll}>
           {posts.length &&
