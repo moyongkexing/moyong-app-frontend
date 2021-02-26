@@ -85,8 +85,7 @@ const Feed: React.FC = () => {
       </div> */}
       <div className="row-span-3 col-span-3">
         <div className={styles.scroll}>
-          {posts.length 
-              ?
+          {posts.length &&
               <>
                 {posts.map((post) => (
                   <Post
@@ -102,7 +101,6 @@ const Feed: React.FC = () => {
                   />
                 ))}
               </>
-              : <p>no posts...</p>
             }
         </div>
       </div>

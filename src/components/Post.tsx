@@ -110,8 +110,8 @@ const Post: React.FC<PROPS> = (props) => {
             </h3>
           </div>
           <div className={styles.post_tweet}>
-            {props.trainingArray.map((record: any) => (
-              <p className="text-lg text-white font-bold">{record.trainingName} {record.trainingWeight}✖︎{record.trainingReps}回</p>
+            {props.trainingArray.map((record: any, index: number) => (
+              <p key={index} className="text-lg text-white font-bold">{record.trainingName} {record.trainingWeight}✖︎{record.trainingReps}回</p>
             ))}
           </div>
         </div>
