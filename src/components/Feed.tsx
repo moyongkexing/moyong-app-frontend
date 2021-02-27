@@ -20,8 +20,8 @@ interface Post {
   uid: string;
 }
 const Feed: React.FC = () => {
-  const [ posts, setPosts] = useState<Post[]>([]);
   const user = useSelector(selectUser);
+  const [ posts, setPosts] = useState<Post[]>([]);
   const [profileUser, setProfileUser ] = useState<User>({
     profileUserName: user.displayName,
     avatar: user.photoUrl
