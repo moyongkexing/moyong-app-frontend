@@ -75,7 +75,7 @@ const TrainingInput: React.FC = () => {
   const classes = useStyles();
   const user = useSelector(selectUser);
   const [ image, setImage] = useState<File | null>(null);
-  const [ recordId, setRecordId ] = useState<number>(1);
+  const [ recordId, setRecordId ] = useState<number>(0);
   const [ trainingRecord, setTrainingRecord ] = useState<TrainingRecord>({
     id: recordId,
     trainingName: "",
@@ -93,6 +93,11 @@ const TrainingInput: React.FC = () => {
       trainingReps: "",
     })
   };
+  const deleteTrainingRecord = (index: number) => {
+    let list = trainingRecords;
+    list.splice(index, 1);
+    setTrainingRecords(list);
+  }
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setImage(e.target.files![0]);
@@ -145,6 +150,7 @@ const TrainingInput: React.FC = () => {
     }
     setImage(null);
     setTrainingRecords([]);
+    setRecordId(0);
   };
   return (
     <form onSubmit={postTrainingRecords} className="flex flex-col items-center">
@@ -208,7 +214,7 @@ const TrainingInput: React.FC = () => {
                 <p className="text-sm">{record.trainingWeight} × {record.trainingReps}回</p>
               </div>
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete">
+                <IconButton edge="end" aria-label="delete" onClick={() => deleteTrainingRecord(record.id)}>
                   <DeleteIcon className="cursor-pointer text-whiteSmoke"/>
                 </IconButton>
               </ListItemSecondaryAction>
