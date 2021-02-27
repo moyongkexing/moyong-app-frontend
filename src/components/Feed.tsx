@@ -20,16 +20,7 @@ interface Post {
   uid: string;
 }
 const Feed: React.FC = () => {
-  const [ posts, setPosts] = useState<Post[]>([{
-      id: "",
-      avatar: "",
-      image: "",
-      trainingArray: [],
-      timestamp: null,
-      username: "",
-      uid: "",
-    },
-  ]);
+  const [ posts, setPosts] = useState<Post[]>([]);
   const user = useSelector(selectUser);
   const [profileUser, setProfileUser ] = useState<User>({
     profileUserName: user.displayName,
@@ -58,7 +49,6 @@ const Feed: React.FC = () => {
   }, []);
   //ユーザープロフィール画面の表示をユーザーごとに切り替える
   const updateProfile = (name:string, avatar:string) => {
-    console.log(`${name} + ${avatar}`);
     setProfileUser({
       profileUserName: name,
       avatar: avatar,
@@ -78,22 +68,22 @@ const Feed: React.FC = () => {
       <div className="row-span-3">
         <div className={styles.scroll}>
           {posts.length &&
-              <>
-                {posts.map((post) => (
-                  <Post
-                    key={post.id}
-                    postId={post.id}
-                    avatar={post.avatar}
-                    image={post.image}
-                    trainingArray={post.trainingArray}
-                    timestamp={post.timestamp}
-                    username={post.username}
-                    postUid={post.uid}
-                    updateProfile={updateProfile}
-                  />
-                ))}
-              </>
-            }
+            <>
+              {posts.map((post) => (
+                <Post
+                  key={post.id}
+                  postId={post.id}
+                  avatar={post.avatar}
+                  image={post.image}
+                  trainingArray={post.trainingArray}
+                  timestamp={post.timestamp}
+                  username={post.username}
+                  postUid={post.uid}
+                  updateProfile={updateProfile}
+                />
+              ))}
+            </>
+          }
         </div>
       </div>
     </div>
