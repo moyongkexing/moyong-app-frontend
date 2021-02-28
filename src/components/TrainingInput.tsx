@@ -94,9 +94,9 @@ const TrainingInput: React.FC = () => {
     })
   };
   const deleteTrainingRecord = (index: number) => {
-    let list = trainingRecords;
-    list.splice(index, 1);
-    setTrainingRecords(list);
+    let newTrainingRecords = [...trainingRecords]
+    newTrainingRecords.splice(index, 1);
+    setTrainingRecords(newTrainingRecords);
   }
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
@@ -202,7 +202,7 @@ const TrainingInput: React.FC = () => {
           </label>
         </IconButton>
         <List dense={true} className="w-full">
-          {trainingRecords.map((record) => (
+          {trainingRecords.map((record, index) => (
             <ListItem key={record.id}>
               <ListItemAvatar>
                 <Avatar className={classes.small}>
@@ -210,11 +210,13 @@ const TrainingInput: React.FC = () => {
                 </Avatar>
               </ListItemAvatar>
               <div className="flex flex-col text-whiteSmoke font-bold w-full">
+                <p>id: {record.id}</p>
+                <p>index: {index}</p>
                 <p>{record.trainingName}</p>
                 <p className="text-sm">{record.trainingWeight} × {record.trainingReps}回</p>
               </div>
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete" onClick={() => deleteTrainingRecord(record.id)}>
+                <IconButton edge="end" aria-label="delete" onClick={() => deleteTrainingRecord(index)}>
                   <DeleteIcon className="cursor-pointer text-whiteSmoke"/>
                 </IconButton>
               </ListItemSecondaryAction>
