@@ -55,17 +55,17 @@ const Feed: React.FC = () => {
     })
   }
   return (
-    <div className="grid grid-rows-3 grid-cols-2 grid-flow-col">
-      <div className="row-span-1">
+    <div className="grid grid-rows-3 grid-cols-9 grid-flow-col">
+      <div className="row-span-1 col-span-4">
         <User
           profileUserName={profileUser.profileUserName}
           profileUserAvatar={profileUser.avatar}
         />
       </div>
-      <div className="row-span-2">
+      <div className="row-span-2 col-span-4">
         <TrainingInput />
       </div>
-      <div className="row-span-3">
+      <div className="row-span-3 col-span-5">
         <div className={styles.scroll}>
           {posts.length
           ? <>
