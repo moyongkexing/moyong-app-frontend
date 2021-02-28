@@ -20,8 +20,8 @@ interface Post {
   uid: string;
 }
 const Feed: React.FC = () => {
-  const [ posts, setPosts] = useState<Post[]>([]);
   const user = useSelector(selectUser);
+  const [ posts, setPosts] = useState<Post[]>([]);
   const [profileUser, setProfileUser ] = useState<User>({
     profileUserName: user.displayName,
     avatar: user.photoUrl
@@ -55,20 +55,20 @@ const Feed: React.FC = () => {
     })
   }
   return (
-    <div className="grid grid-rows-3 grid-cols-2 grid-flow-col gap-6">
+    <div className="grid grid-rows-3 grid-cols-2 grid-flow-col">
       <div className="row-span-1">
         <User
           profileUserName={profileUser.profileUserName}
           profileUserAvatar={profileUser.avatar}
         />
       </div>
-      <div className="row-span-2 w-28rem">
+      <div className="row-span-2">
         <TrainingInput />
       </div>
       <div className="row-span-3">
         <div className={styles.scroll}>
-          {posts.length &&
-            <>
+          {posts.length
+          ? <>
               {posts.map((post) => (
                 <Post
                   key={post.id}
@@ -83,6 +83,7 @@ const Feed: React.FC = () => {
                 />
               ))}
             </>
+          : <p>no posts...</p>
           }
         </div>
       </div>

@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme) => ({
 const Post: React.FC<PROPS> = (props) => {
   const user = useSelector(selectUser);
   const classes = useStyles();
-  const [comment, setComment] = useState("");
-  const [openComments, setOpenComments] = useState(false);
+  const [comment, setComment] = useState<string>("");
+  const [openComments, setOpenComments] = useState<boolean>(false);
   const [comments, setComments] = useState<COMMENT[]>([]);
   const newComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
