@@ -21,7 +21,6 @@ import {
 } from "@material-ui/core";
 
 interface TrainingRecord {
-  id: number;
   trainingName: string;
   trainingWeight: string;
   trainingReps: string;
@@ -75,9 +74,7 @@ const TrainingInput: React.FC = () => {
   const classes = useStyles();
   const user = useSelector(selectUser);
   const [ image, setImage] = useState<File | null>(null);
-  const [ recordId, setRecordId ] = useState<number>(1);
   const [ trainingRecord, setTrainingRecord ] = useState<TrainingRecord>({
-    id: recordId,
     trainingName: "",
     trainingWeight: "10lbs | 4.5kg",
     trainingReps: "",
@@ -85,14 +82,17 @@ const TrainingInput: React.FC = () => {
   const [ trainingRecords, setTrainingRecords ] = useState<TrainingRecord[]>([]);
   const saveTrainingRecord = () => {
     setTrainingRecords([...trainingRecords, trainingRecord]);
-    setRecordId(recordId + 1);
     setTrainingRecord({
-      id: recordId,
       trainingName: "",
       trainingWeight: "10lbs | 4.5kg",
       trainingReps: "",
     })
   };
+  const deleteTrainingRecord = (index: number) => {
+    let newTrainingRecords = [...trainingRecords]
+    newTrainingRecords.splice(index, 1);
+    setTrainingRecords(newTrainingRecords);
+  }
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setImage(e.target.files![0]);
@@ -158,7 +158,7 @@ const TrainingInput: React.FC = () => {
           placeholder="トレーニング名"
           type="text"
           value={trainingRecord.trainingName}
-          onChange={(e) => setTrainingRecord({...trainingRecord, id: recordId, trainingName: e.target.value})}
+          onChange={(e) => setTrainingRecord({...trainingRecord, trainingName: e.target.value})}
         />
         <select
           className="w-full mt-4 bg-inputBg text-inputText px-4 py-2 rounded-3xl outline-none border-none text-lg"
@@ -196,8 +196,8 @@ const TrainingInput: React.FC = () => {
           </label>
         </IconButton>
         <List dense={true} className="w-full">
-          {trainingRecords.map((record) => (
-            <ListItem key={record.id}>
+          {trainingRecords.map((record, index) => (
+            <ListItem key={index}>
               <ListItemAvatar>
                 <Avatar className={classes.small}>
                   <FitnessCenterIcon/>
@@ -208,7 +208,7 @@ const TrainingInput: React.FC = () => {
                 <p className="text-sm">{record.trainingWeight} × {record.trainingReps}回</p>
               </div>
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete">
+                <IconButton edge="end" aria-label="delete" onClick={() => deleteTrainingRecord(index)}>
                   <DeleteIcon className="cursor-pointer text-whiteSmoke"/>
                 </IconButton>
               </ListItemSecondaryAction>
