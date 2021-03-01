@@ -13,10 +13,15 @@ module.exports = {
         'toggleLoginBtn': '#0000ff',
         'setAvatarBtn': '#303f9e',
         'whiteSmoke': '#f5f5f5',
+
+        'boxBg': '#616165'
       },
       spacing: {
         '28rem': '28rem',
       },
+      height: {
+        header: '7%',
+      }
     },
   },
   variants: {

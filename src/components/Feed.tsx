@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styles from './Feed.module.css';
+import styles from './Feed.module.scss';
 import { db } from "../firebase";
 import TrainingInput from './TrainingInput';
 import Post from './Post';
@@ -20,8 +20,8 @@ interface Post {
   uid: string;
 }
 const Feed: React.FC = () => {
-  const user = useSelector(selectUser);
   const [ posts, setPosts] = useState<Post[]>([]);
+  const user = useSelector(selectUser);
   const [profileUser, setProfileUser ] = useState<User>({
     profileUserName: user.displayName,
     avatar: user.photoUrl
@@ -55,26 +55,28 @@ const Feed: React.FC = () => {
     })
   }
   return (
-    <div className="grid grid-rows-3 grid-cols-9 grid-flow-col">
-      <div>
-        {/* <SideBar/> */}
+    <div className="grid grid-rows-3 grid-cols-12 grid-flow-col">
+      <div className="row-span-3 col-span-1">
+        <div className={styles.sideBar}>
+          {/* <Header/> */}
+        </div>
       </div>
-      <div className="row-span-1 col-span-4">
+      <div className="row-span-1 col-span-4 flex justify-center items-center">
         <User
           profileUserName={profileUser.profileUserName}
           profileUserAvatar={profileUser.avatar}
         />
       </div>
       <div className="row-span-2 col-span-4">
-        <TrainingInput />
-      </div>
-      <div className="row-span-3 col-span-5">
-        <div>
-          {/* <Header/> */}
+        <div className={styles.underLeft}>
+          <TrainingInput />
         </div>
+      </div>
+      <div className="row-span-3 col-span-6 bg-boxColor">
+        <div className={styles.header}></div>
         <div className={styles.scroll}>
-          {posts.length
-          ? <>
+          {posts.length &&
+            <>
               {posts.map((post) => (
                 <Post
                   key={post.id}
@@ -89,7 +91,6 @@ const Feed: React.FC = () => {
                 />
               ))}
             </>
-          : <p>no posts...</p>
           }
         </div>
       </div>

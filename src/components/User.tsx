@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const User:React.FC<PROPS> = (props) => {
   const classes = useStyles();
   return (
-    <div className="w-full flex items-center">
+    <div className="flex items-center">
       <Avatar className={classes.large} src={props.profileUserAvatar}/>
       <h3 className="font-bold text-xl text-white ml-5">
         {props.profileUserName}

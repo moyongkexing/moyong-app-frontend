@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme) => ({
 const Post: React.FC<PROPS> = (props) => {
   const user = useSelector(selectUser);
   const classes = useStyles();
-  const [comment, setComment] = useState<string>("");
-  const [openComments, setOpenComments] = useState<boolean>(false);
+  const [comment, setComment] = useState("");
+  const [openComments, setOpenComments] = useState(false);
   const [comments, setComments] = useState<COMMENT[]>([]);
   const newComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,7 +95,7 @@ const Post: React.FC<PROPS> = (props) => {
               <span
                 className={styles.post_headerUser}
                 onClick={() => props.updateProfile(props.username, props.avatar)}
-              >@{props.username}</span>
+              >{props.username}</span>
               <span className={styles.post_headerTime}>
                 {new Date(props.timestamp?.toDate()).toLocaleString()}
               </span>
