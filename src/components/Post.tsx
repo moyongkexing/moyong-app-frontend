@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Post.module.css";
 import { db } from "../firebase";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
@@ -8,7 +7,7 @@ import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MessageIcon from "@material-ui/icons/Message";
 import SendIcon from "@material-ui/icons/Send";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 interface PROPS {
   postId: string;
   avatar: string;
@@ -81,45 +80,55 @@ const Post: React.FC<PROPS> = (props) => {
     };
   }, [props.postId]);
   return (
-    <div className={styles.post}>
-      <div className={styles.post_avatar}>
+    <div className="flex items-start pb-3">
+      <div className="p-5">
         <Avatar
           src={props.avatar}
-          className={styles.hoverAvatar}
+          className="cursor-pointer"
           onClick={() => props.updateProfile(props.username, props.avatar)}/>
       </div>
-      <div className={styles.post_body}>
+      <div className="flex-1 p-4">
         <div>
-          <div className={styles.post_header}>
+          <div className="text-sm mb-1">
             <h3>
               <span
-                className={styles.post_headerUser}
+                className="text-lg font-bold text-whiteSmoke cursor-pointer mr-3"
                 onClick={() => props.updateProfile(props.username, props.avatar)}
               >{props.username}</span>
-              <span className={styles.post_headerTime}>
+              <span className="text-gray-500 text-sm">
                 {new Date(props.timestamp?.toDate()).toLocaleString()}
               </span>
             </h3>
           </div>
-          <div className={styles.post_tweet}>
+          <table className="mb-3 flex flex-col">
             {props.trainingArray.map((record: any, index: number) => (
-              <p key={index} className="text-lg text-white font-bold">{record.trainingName} {record.trainingWeight}×{record.trainingReps}回</p>
+              <tr className="text-whiteSmoke font-semibold" key={index}>
+                <td className="mr-1">{record.trainingName}</td>
+                <td className="mr-1">
+                  {
+                    record.trainingWeight == "none"
+                    ? ""
+                    : record.trainingWeight
+                  }
+                  </td>
+                <td className="mr-1">{record.trainingReps}回</td>
+              </tr>
             ))}
-          </div>
+          </table>
         </div>
         {props.image && (
-          <div className={styles.post_tweetImage}>
-            <img src={props.image} alt="tweet" />
+          <div className="flex justify-center items-center">
+            <img className="object-contain rounded-2xl max-h-60" src={props.image} alt="tweet" />
           </div>
         )}
         <MessageIcon
-          className={styles.post_commentIcon}
+          className="mt-4 cursor-pointer text-whiteSmoke"
           onClick={() => setOpenComments(!openComments)}
         />
         {
           user.uid === props.postUid &&
           <DeleteIcon
-          className={styles.post_deleteIcon}
+          className="mt-4 cursor-pointer text-whiteSmoke"
           onClick={deletePost}
         />
         }
@@ -127,18 +136,18 @@ const Post: React.FC<PROPS> = (props) => {
           <>
             {
               comments.map((com) => (
-                <div key={com.id} className={styles.post_comment}>
+                <div key={com.id} className="flex items-center break-all m-3">
                   <Avatar src={com.avatar} className={classes.small}/>
-                  <span className={styles.post_commentUser}>@{com.username}</span>
-                  <span className={styles.post_commentText}>{com.text}</span>
-                  <span className={styles.post_headerTime}>{new Date(com.timestamp?.toDate()).toLocaleString()}</span>
+                  <span className="font-semibold text-whiteSmoke mr-3">@{com.username}</span>
+                  <span className="text-sm text-whiteSmoke mr-3">{com.text}</span>
+                  <span className="text-gray-500 text-sm">{new Date(com.timestamp?.toDate()).toLocaleString()}</span>
                 </div>
               ))
             }
             <form onSubmit={newComment}>
-              <div className={styles.post_form}>
+              <div className="m-10 relative flex">
               <input
-                className={styles.post_input}
+                className="outline-none border-none p-3 rounded-lg mr-2"
                 type="text"
                 placeholder="Type new comment..."
                 value={comment}
@@ -150,10 +159,12 @@ const Post: React.FC<PROPS> = (props) => {
                 type="submit"
                 disabled={!comment}
                 className={
-                  comment ? styles.post_button : styles.post_buttonDisable
+                  comment
+                  ? "border-none text-whiteSmoke bg-transparent cursor-pointer"
+                  : "hidden"
                 }
               >
-                <SendIcon className={styles.post_sendIcon} />
+                <SendIcon/>
               </button>
               </div>
             </form>
