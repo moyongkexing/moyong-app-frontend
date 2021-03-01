@@ -6,7 +6,6 @@ import { selectUser } from "../features/userSlice";
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MessageIcon from "@material-ui/icons/Message";
-import SendIcon from "@material-ui/icons/Send";
 import DeleteIcon from "@material-ui/icons/Delete";
 interface PROPS {
   postId: string;
@@ -17,6 +16,7 @@ interface PROPS {
   username: string;
   postUid: string;
   updateProfile: any;
+  openCommentInput: any;
 }
 interface COMMENT {
   id: string;
@@ -36,19 +36,9 @@ const useStyles = makeStyles((theme) => ({
 const Post: React.FC<PROPS> = (props) => {
   const user = useSelector(selectUser);
   const classes = useStyles();
-  const [comment, setComment] = useState("");
   const [openComments, setOpenComments] = useState(false);
   const [comments, setComments] = useState<COMMENT[]>([]);
-  const newComment = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    db.collection("training_posts").doc(props.postId).collection("comments").add({
-      avatar: user.photoUrl,
-      text: comment,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      username: user.displayName,
-    });
-    setComment("");
-  }
+  
   // 投稿削除
   const deletePost = () => {
     if (user.uid === props.postUid) {
@@ -144,30 +134,7 @@ const Post: React.FC<PROPS> = (props) => {
                 </div>
               ))
             }
-            <form onSubmit={newComment}>
-              <div className="m-10 relative flex">
-              <input
-                className="outline-none border-none p-3 rounded-lg mr-2"
-                type="text"
-                placeholder="Type new comment..."
-                value={comment}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setComment(e.target.value)
-                }}
-              />
-              <button 
-                type="submit"
-                disabled={!comment}
-                className={
-                  comment
-                  ? "border-none text-whiteSmoke bg-transparent cursor-pointer"
-                  : "hidden"
-                }
-              >
-                <SendIcon/>
-              </button>
-              </div>
-            </form>
+            {/* <button onClick={() => props.openCommentInput(props.postId)}></button> */}
           </>
         )}
       </div>
