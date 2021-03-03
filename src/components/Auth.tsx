@@ -75,13 +75,13 @@ const useStyles = makeStyles((theme) => ({
 const Auth:React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUserName] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [username, setUserName] = useState<string>("");
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
-  const [isLogin, setIsLogin] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [resetEmail, setResetEmail] = useState<string>("");
   
   const sendResetEmail = async (e: React.MouseEvent<HTMLElement>) => {
     await auth

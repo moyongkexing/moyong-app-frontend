@@ -23,21 +23,19 @@ const useStyles = makeStyles((theme: Theme) =>
 const User:React.FC<PROPS> = (props) => {
   const classes = useStyles();
   return (
-    <div className="flex justify-start items-center pt-5">
+    <div className="flex items-center">
       <Avatar className={classes.large} src={props.profileUserAvatar}/>
-      <div className="flex">
-        <h3 className="font-bold text-xl text-white ml-5">
-          {props.profileUserName}
-        </h3>
-        <button
-          className="cursor-pointer bg-transparent border-none outline-none text-white"
-          onClick={async () => {
-            await auth.signOut();
-          }}
-        >
-          <ExitToAppIcon/>
-        </button>
-      </div>
+      <h3 className="font-bold text-xl text-white ml-5">
+        {props.profileUserName}
+      </h3>
+      <button
+        className="cursor-pointer bg-transparent border-none outline-none text-white"
+        onClick={async () => {
+          await auth.signOut();
+        }}
+      >
+        <ExitToAppIcon/>
+      </button>
     </div>
   )
 }

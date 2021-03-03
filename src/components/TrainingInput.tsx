@@ -25,6 +25,7 @@ interface TrainingRecord {
   trainingWeight: string;
   trainingReps: string;
 }
+
 const weightList = [
   {value: 'none', label: 'なし'},
   {value: '10lbs | 4.5kg', label: '10lbs | 4.5kg'},
@@ -86,8 +87,12 @@ const TrainingInput: React.FC = () => {
       trainingWeight: "10lbs | 4.5kg",
       trainingReps: "",
     })
-    console.log(trainingRecords);
   };
+  const deleteTrainingRecord = (index: number) => {
+    let newTrainingRecords = [...trainingRecords]
+    newTrainingRecords.splice(index, 1);
+    setTrainingRecords(newTrainingRecords);
+  }
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setImage(e.target.files![0]);
@@ -191,8 +196,8 @@ const TrainingInput: React.FC = () => {
           </label>
         </IconButton>
         <List dense={true} className="w-full">
-          {trainingRecords.map((record) => (
-            <ListItem>
+          {trainingRecords.map((record, index) => (
+            <ListItem key={index}>
               <ListItemAvatar>
                 <Avatar className={classes.small}>
                   <FitnessCenterIcon/>
@@ -203,7 +208,7 @@ const TrainingInput: React.FC = () => {
                 <p className="text-sm">{record.trainingWeight} × {record.trainingReps}回</p>
               </div>
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete">
+                <IconButton edge="end" aria-label="delete" onClick={() => deleteTrainingRecord(index)}>
                   <DeleteIcon className="cursor-pointer text-whiteSmoke"/>
                 </IconButton>
               </ListItemSecondaryAction>
